@@ -68,7 +68,7 @@
 
 <main id="app">
 
-<div class="page active" style="display:block;">
+<div id="page-devis" class="page active" style="display:block;">
   <div class="page-hero-small dark-section">
     <div class="container">
       <h1>DEMANDE DE DEVIS</h1>
@@ -128,7 +128,7 @@
           <input type="text" placeholder="Ex : dans 3 mois, urgent, etc.">
         </div>
 
-        <button class="btn-green w-full" onclick="showSuccessDevis()">ENVOYER LA DEMANDE</button>
+        <button class="btn-green w-full" onclick="submitDevis(event)">ENVOYER LA DEMANDE</button>
         <div id="devisSuccess" style="display:none; color:#7ED957; padding:1rem; text-align:center; font-weight:600;">
           ✅ Votre demande de devis a été envoyée ! Nous vous contacterons dans les 48h.
         </div>
@@ -211,7 +211,10 @@
 
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script src="js/app.js"></script>
+<script>
+  window.API_BASE = 'http://localhost:3001/api';
+</script>
+<script src="js/app.js?v=20260627"></script>
 </body>
 </html>
 

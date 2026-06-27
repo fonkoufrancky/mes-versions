@@ -1,9 +1,11 @@
-# TODO
+# TODO - Fix Devis/CRUD
 
-- [x] Comprendre le besoin: ajouter un bouton « Paramètres/Configuration » dans l’admin.
-- [x] Vérifier les pages admin existantes (HTML/admin.html) et la logique JS (js/app.js).
-- [x] Vérifier les routes backend de configuration (PUT/GET /api/settings) et les contraintes auth/role.
-- [x] Ajouter un bouton « Configuration » via le menu admin si absent.
-- [x] Implémenter l’ouverture d’une modale de configuration et/ou l’accès à la page « Paramètres ».
-- [ ] Tester le bouton dans le navigateur et valider la sauvegarde.
+- [ ] Fix admin: générer/brancher les boutons Accepter/Refuser sur la table devis (`js/app.js`)
+- [ ] Backend: ajouter route `POST /api/devis` pour créer une demande de devis (`server/routes/crud.js`)
+- [ ] Front public: envoyer le formulaire “DEMANDE DE DEVIS” via `fetch` vers `POST /api/devis` (`HTML/index.html`)
+- [ ] Vérifier compatibilité: champs attendus par l’admin (fullName, service, budget, dateISO, status)
+- [ ] Lancer le serveur + tester:
+  - [ ] création devis => `data/db.json` incrémente `devis` et `counters.devisId`
+  - [ ] admin => clic accepter/refuser => `PUT /api/devis/:id` met à jour le statut
+  - [ ] CRUD services => ajout/modif/suppression fonctionnent (au moins sans erreurs console)
 

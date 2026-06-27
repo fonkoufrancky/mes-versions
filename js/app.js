@@ -89,6 +89,18 @@
     $$('.admin-nav-item').forEach((a) => a.classList.remove('active'));
     if (triggerEl) triggerEl.classList.add('active');
 
+    // Fallback: if Messages tab exists but nav item is missing, create it
+    const nav = document.querySelector('.admin-nav');
+    if (nav && !document.querySelector('.admin-nav-item[data-tab="messages-adm"]')) {
+      const msgItem = document.createElement('a');
+      msgItem.href = '#';
+      msgItem.className = 'admin-nav-item';
+      msgItem.setAttribute('data-tab', 'messages-adm');
+      msgItem.onclick = function (e) { e.preventDefault(); showAdminTab('messages-adm', this); };
+      msgItem.textContent = '💬 Messages';
+      nav.insertBefore(msgItem, nav.children[4]);
+    }
+
     // Load data on demand
     loadAdminData().catch(() => {});
   }
@@ -114,6 +126,62 @@
     }, 5000);
   }
 
+  // Public: Devis submit
+  window.submitDevis = async function submitDevis(ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+
+    const page = $('#page-devis');
+    if (!page) return;
+
+    const inputs = page.querySelectorAll('input, select, textarea');
+    // Collect by label order (current HTML has no ids). We will infer by placeholders/structure.
+    const getByPlaceholder = (ph) => Array.from(page.querySelectorAll('input, textarea')).find((el) => el.getAttribute('placeholder') === ph);
+
+    const fullNameEl = page.querySelector('input[type="text"][placeholder="Votre nom"]');
+    const emailEl = page.querySelector('input[type="email"][placeholder="votre@email.com"]');
+    const phoneEl = page.querySelector('input[type="tel"][placeholder="Votre numéro"]');
+    const companyEl = page.querySelector('input[type="text"][placeholder="Nom de votre société"]');
+
+    const selects = page.querySelectorAll('select');
+    const serviceEl = selects && selects[0] ? selects[0] : null;
+    const budgetEl = selects && selects[1] ? selects[1] : null;
+
+    const descEl = page.querySelector('textarea[rows="6"]');
+    const desiredTimeEl = page.querySelector('input[type="text"][placeholder="Ex : dans 3 mois, urgent, etc."]');
+
+    const payload = {
+      fullName: fullNameEl && fullNameEl.value ? String(fullNameEl.value).trim() : '',
+      email: emailEl && emailEl.value ? String(emailEl.value).trim() : '',
+      phone: phoneEl && phoneEl.value ? String(phoneEl.value).trim() : '',
+      company: companyEl && companyEl.value ? String(companyEl.value).trim() : '',
+      service: serviceEl ? String(serviceEl.value || '') : '',
+      budget: budgetEl ? String(budgetEl.value || '') : '',
+      description: descEl && descEl.value ? String(descEl.value).trim() : '',
+      desiredTime: desiredTimeEl && desiredTimeEl.value ? String(desiredTimeEl.value).trim() : ''
+    };
+
+    // Very light validation
+    if (!payload.fullName || !payload.email || !payload.service || !payload.budget) {
+      alert('Merci de compléter les champs obligatoires (Nom, Email, Service, Budget).');
+      return;
+    }
+
+    try {
+      const token = null;
+      await apiFetch('/devis', { method: 'POST', body: payload, token });
+      showSuccessDevis();
+
+      // Optional: reset form fields
+      [fullNameEl, emailEl, phoneEl, companyEl, serviceEl, budgetEl, descEl, desiredTimeEl].forEach((el) => {
+        if (!el) return;
+        if ('value' in el) el.value = '';
+      });
+    } catch (e) {
+      alert('Erreur envoi devis: ' + (e && e.message ? e.message : e));
+    }
+  };
+
+
   function scrollTopBtnVisibility() {
     const btn = $('#scrollTopBtn');
     if (!btn) return;
@@ -129,7 +197,8 @@
   // ADMIN (API JSON)
   // =====================
 
-  const API_BASE = (window.API_BASE || '').toString().replace(/\/$/, '') || '/api';
+  const API_BASE = (window.API_BASE || '').toString().replace(/\/$/, '') ||
+    ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '0.0.0.0' || window.location.hostname === '::1' || window.location.hostname.endsWith('.localhost')) ? 'http://localhost:3001/api' : '/api');
 
   function getToken() {
     return window.localStorage.getItem('adminToken');
@@ -173,13 +242,14 @@
     wrap.id = 'adminLoginBox';
     wrap.style.position = 'fixed';
     wrap.style.inset = '0';
-    wrap.style.background = 'rgba(0,0,0,0.45)';
-    wrap.style.zIndex = '2000';
+    wrap.style.background = 'rgba(0,0,0,0.65)';
+    wrap.style.zIndex = '5000';
     wrap.style.display = 'flex';
     wrap.style.alignItems = 'center';
     wrap.style.justifyContent = 'center';
+    wrap.style.padding = '16px';
     wrap.innerHTML = `
-      <div style="width: min(520px, 92vw); background:#111827; color:white; border:1px solid rgba(126,217,87,0.25); border-radius:12px; padding:20px; box-shadow:0 10px 40px rgba(0,0,0,0.35);">
+      <div style="width:min(520px, 100%); background:#111827; color:white; border:1px solid rgba(126,217,87,0.25); border-radius:12px; padding:20px; box-shadow:0 10px 40px rgba(0,0,0,0.35); box-sizing:border-box;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
           <div style="font-family:Montserrat, sans-serif; font-weight:900; letter-spacing:0.05em;">LOGIN ADMIN</div>
           <button id="adminLoginClose" style="background:transparent; color:rgba(255,255,255,0.6); border:0; font-size:18px; cursor:pointer;">×</button>
@@ -187,11 +257,11 @@
         <div style="display:grid; grid-template-columns:1fr; gap:12px;">
           <div>
             <label style="display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.7); margin-bottom:6px;">Email</label>
-            <input id="adminLoginEmail" type="email" placeholder="admin@kmroot.com" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); outline:none; background:#0b1120; color:white;" />
+            <input id="adminLoginEmail" type="email" placeholder="admin@kmroot.com" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); outline:none; background:#0b1120; color:white; box-sizing:border-box;" />
           </div>
           <div>
             <label style="display:block; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(255,255,255,0.7); margin-bottom:6px;">Mot de passe</label>
-            <input id="adminLoginPassword" type="password" placeholder="admin123" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); outline:none; background:#0b1120; color:white;" />
+            <input id="adminLoginPassword" type="password" placeholder="admin123" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); outline:none; background:#0b1120; color:white; box-sizing:border-box;" />
           </div>
           <div id="adminLoginError" style="display:none; color:#fca5a5; font-weight:700; font-size:13px;">Erreur</div>
           <button id="adminLoginBtn" class="btn-green" style="width:100%; padding:12px 28px;">Se connecter</button>
@@ -204,31 +274,51 @@
     const close = wrap.querySelector('#adminLoginClose');
     if (close) close.addEventListener('click', () => wrap.remove());
 
+    const adminLoginBtn = wrap.querySelector('#adminLoginBtn');
+    if (adminLoginBtn) {
+      adminLoginBtn.addEventListener('click', async () => {
+        const emailInput = wrap.querySelector('#adminLoginEmail');
+        const email = emailInput && emailInput.value ? String(emailInput.value).trim() : '';
+        const passwordInput = wrap.querySelector('#adminLoginPassword');
+        const password = passwordInput && passwordInput.value ? String(passwordInput.value) : '';
+        const errEl = wrap.querySelector('#adminLoginError');
 
+        try {
+          if (errEl) errEl.style.display = 'none';
+          const data = await apiFetch('/auth/login', {
+            method: 'POST',
+            body: { email, password },
+            token: null
+          });
+          setToken(data.token);
+          wrap.remove();
+          await loadAdminData();
+        } catch (e) {
+          if (errEl) {
+            errEl.textContent = `Connexion impossible: ${e.message}`;
+            errEl.style.display = 'block';
+          }
+        }
+      });
+    }
 
-    if (adminLoginBtn) adminLoginBtn.addEventListener('click', async () => {
+    const passwordInput = wrap.querySelector('#adminLoginPassword');
+    if (passwordInput) {
+      passwordInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && adminLoginBtn) adminLoginBtn.click();
+      });
+    }
 
-      const emailInput = wrap.querySelector('#adminLoginEmail');
-      const email = emailInput && emailInput.value ? String(emailInput.value).trim() : '';
-      const passwordInput = wrap.querySelector('#adminLoginPassword');
-      const password = passwordInput && passwordInput.value ? String(passwordInput.value) : '';
-
-      const errEl = wrap.querySelector('#adminLoginError');
-      try {
-        errEl.style.display = 'none';
-        const data = await apiFetch('/auth/login', {
-          method: 'POST',
-          body: { email, password },
-          token: null
-        });
-        setToken(data.token);
-        wrap.remove();
-        await loadAdminData();
-      } catch (e) {
-        errEl.textContent = `Connexion impossible: ${e.message}`;
-        errEl.style.display = 'block';
-      }
-    });
+    const emailInput = wrap.querySelector('#adminLoginEmail');
+    if (emailInput) {
+      emailInput.focus();
+      emailInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const next = wrap.querySelector('#adminLoginPassword');
+          if (next) next.focus();
+        }
+      });
+    }
   }
 
   function adminRequireAuthOrLogin() {
@@ -241,6 +331,20 @@
 
     ensureAdminLoginUI();
     return false;
+  }
+
+  function ensureAdminMessagesNavEntry() {
+    const nav = document.querySelector('.admin-nav');
+    if (!nav) return;
+    if (document.querySelector('.admin-nav-item[data-tab="messages-adm"]')) return;
+
+    const msgItem = document.createElement('a');
+    msgItem.href = '#';
+    msgItem.className = 'admin-nav-item';
+    msgItem.setAttribute('data-tab', 'messages-adm');
+    msgItem.onclick = function (e) { e.preventDefault(); showAdminTab('messages-adm', this); };
+    msgItem.textContent = '💬 Messages';
+    nav.insertBefore(msgItem, nav.children[4]);
   }
 
   async function loadAdminKPIs() {
@@ -314,15 +418,75 @@
                 <td>${escapeHtml(s.category)}</td>
                 <td>${s.status === 'active' ? '<span class="badge green">Actif</span>' : '<span class="badge yellow">Inactif</span>'}</td>
                 <td>
-                  <button class="adm-btn">Éditer</button>
-                  <button class="adm-btn red">Suppr.</button>
+                  <button class="adm-btn" data-service-id="${s.id}" data-action="toggle">Éditer</button>
+                  <button class="adm-btn red" data-service-id="${s.id}" data-action="delete">Suppr.</button>
                 </td>
               </tr>
             `
           )
           .join('');
 
-        // Wire devis actions (delegated)
+        tBody.querySelectorAll('button[data-service-id][data-action]').forEach((btn) => {
+          btn.addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            const id = btn.getAttribute('data-service-id');
+            const action = btn.getAttribute('data-action');
+            if (!id || !action) return;
+
+            btn.disabled = true;
+            try {
+              if (action === 'delete') {
+                await apiFetch(`/services/${id}`, { method: 'DELETE' });
+              } else {
+                // toggle active/inactive (simple edit)
+                const row = btn.closest('tr');
+                const statusCell = row ? row.children[3] : null;
+                const wantsActive = statusCell && statusCell.textContent ? !statusCell.textContent.includes('Actif') : false;
+                const next = wantsActive ? 'active' : 'inactive';
+                await apiFetch(`/services/${id}`, { method: 'PUT', body: { status: next } });
+              }
+              await loadAdminTables();
+            } catch (e2) {
+              alert('Erreur service: ' + (e2 && e2.message ? e2.message : e2));
+              btn.disabled = false;
+            }
+          });
+        });
+      }
+    }
+
+
+
+    // Devis
+    const devisBox = $('#adm-devis-adm');
+    if (devisBox) {
+      const tBody = devisBox.querySelector('table tbody');
+      if (tBody) {
+        const data = await apiFetch('/devis');
+        tBody.innerHTML = (data.items || [])
+          .map((d) => {
+            const dateLabel = d.dateISO ? new Date(d.dateISO).toLocaleDateString('fr-FR') : '';
+            let statusHtml = '<span class="badge yellow">En attente</span>';
+            if (d.status === 'accepted') statusHtml = '<span class="badge green">Accepté</span>';
+            if (d.status === 'rejected') statusHtml = '<span class="badge red">Refusé</span>';
+
+            return `
+              <tr>
+                <td>${String(d.id).padStart(2, '0')}</td>
+                <td>${escapeHtml(d.fullName || '')}</td>
+                <td>${escapeHtml(d.service || '')}</td>
+                <td>${escapeHtml(d.budget || '')}</td>
+                <td>${escapeHtml(dateLabel)}</td>
+                <td>${statusHtml}</td>
+                <td>
+                  <button class="adm-btn" data-devis-id="${d.id}" data-action="accept">Accepter</button>
+                  <button class="adm-btn red" data-devis-id="${d.id}" data-action="reject">Refuser</button>
+                </td>
+              </tr>
+            `;
+          })
+          .join('');
+
         tBody.querySelectorAll('button[data-devis-id][data-action]').forEach((btn) => {
           btn.addEventListener('click', async (ev) => {
             ev.preventDefault();
@@ -330,14 +494,19 @@
             const action = btn.getAttribute('data-action');
             if (!id || !action) return;
 
-            const nextStatus = action === 'accepted' ? 'accepted' : 'rejected';
             btn.disabled = true;
             try {
-              await apiFetch(`/devis/${id}`, {
-                method: 'PUT',
-                body: { status: nextStatus }
-              });
+              const status = action === 'accept' ? 'accepted' : 'rejected';
+              const rejectionReason = action === 'reject'
+                ? window.prompt('Raison du refus (facultative) :', 'Votre demande ne correspond pas aux critères actuels.')
+                : '';
+              await apiFetch(`/devis/${id}`, { method: 'PUT', body: { status, rejectionReason } });
               await loadAdminTables();
+              if (status === 'accepted') {
+                alert('Le client a été notifié de l’acceptation du devis.');
+              } else {
+                alert('Le client a été notifié du refus du devis avec la raison fournie.');
+              }
             } catch (e2) {
               alert('Erreur devis: ' + (e2 && e2.message ? e2.message : e2));
               btn.disabled = false;
@@ -347,67 +516,57 @@
       }
     }
 
-
-    // Réalisations
-    const reBox = $('#adm-realisations-adm');
-    if (reBox) {
-      const tBody = reBox.querySelector('table tbody');
+    // Messages
+    const messagesBox = $('#adm-messages-adm');
+    if (messagesBox) {
+      const tBody = messagesBox.querySelector('table tbody');
       if (tBody) {
-        const data = await apiFetch('/realisations');
+        const data = await apiFetch('/messages');
         tBody.innerHTML = (data.items || [])
-          .map(
-            (r) => `
-              <tr>
-                <td>${String(r.id).padStart(2, '0')}</td>
-                <td>${escapeHtml(r.title)}</td>
-                <td>${escapeHtml(r.category)}</td>
-                <td>${escapeHtml(r.dateLabel || '')}</td>
-                <td>
-                  <button class="adm-btn">Éditer</button>
-                  <button class="adm-btn red">Suppr.</button>
-                </td>
-              </tr>
-            `
-          )
-          .join('');
-      }
-    }
-
-    // Devis
-    const devisBox = $('#adm-devis-adm');
-    if (devisBox) {
-      const tBody = devisBox.querySelector('table tbody');
-      if (tBody) {
-        const data = await apiFetch('/devis');
-        tBody.innerHTML = (data.items || [])
-          .map((x) => {
-            let badge = 'badge yellow';
-            if (x.status === 'accepted') badge = 'badge green';
-            if (x.status === 'rejected') badge = 'badge red';
-            let label = x.status;
-            if (x.status === 'pending') label = 'En attente';
-            if (x.status === 'accepted') label = 'Accepté';
-            if (x.status === 'rejected') label = 'Refusé';
+          .map((m) => {
+            const dateLabel = m.createdAt ? new Date(m.createdAt).toLocaleString('fr-FR') : '';
+            let statusHtml = '<span class="badge yellow">Non lu</span>';
+            if (m.status === 'read') statusHtml = '<span class="badge green">Lu</span>';
             return `
               <tr>
-                <td>#${String(x.id).padStart(3, '0')}</td>
-                <td>${escapeHtml(x.fullName)}</td>
-                <td>${escapeHtml(x.service || '')}</td>
-                <td>${escapeHtml(x.budget || '')}</td>
-                <td>${x.dateISO ? new Date(x.dateISO).toLocaleDateString('fr-FR') : ''}</td>
-                <td><span class="${badge}">${label}</span></td>
+                <td>${String(m.id).padStart(2, '0')}</td>
+                <td>${escapeHtml(m.senderName || '')}</td>
+                <td>${escapeHtml(m.email || '')}</td>
+                <td>${escapeHtml(m.subject || '')}</td>
+                <td>${escapeHtml(m.message || '')}</td>
+                <td>${statusHtml}</td>
                 <td>
-                  <button class="adm-btn green" data-devis-id="${x.id}" data-action="accepted" ${x.status === 'accepted' ? 'disabled' : ''}>
-                    Accepter
-                  </button>
-                  <button class="adm-btn red" data-devis-id="${x.id}" data-action="rejected" ${x.status === 'rejected' ? 'disabled' : ''}>
-                    Refuser
-                  </button>
+                  <button class="adm-btn" data-message-id="${m.id}" data-action="read">Marquer lu</button>
+                  <button class="adm-btn red" data-message-id="${m.id}" data-action="delete">Suppr.</button>
                 </td>
               </tr>
             `;
           })
           .join('');
+
+        tBody.querySelectorAll('button[data-message-id][data-action]').forEach((btn) => {
+          btn.addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            const id = btn.getAttribute('data-message-id');
+            const action = btn.getAttribute('data-action');
+            if (!id || !action) return;
+
+            btn.disabled = true;
+            try {
+              if (action === 'delete') {
+                const ok = confirm('Supprimer ce message ?');
+                if (!ok) return;
+                await apiFetch(`/messages/${id}`, { method: 'DELETE' });
+              } else {
+                await apiFetch(`/messages/${id}`, { method: 'PUT', body: { status: 'read' } });
+              }
+              await loadAdminTables();
+            } catch (e2) {
+              alert('Erreur message: ' + (e2 && e2.message ? e2.message : e2));
+              btn.disabled = false;
+            }
+          });
+        });
       }
     }
 
@@ -426,13 +585,104 @@
                 <td>${escapeHtml(p.category)}</td>
                 <td>${escapeHtml(p.dateLabel || '')}</td>
                 <td>
-                  <button class="adm-btn">Éditer</button>
-                  <button class="adm-btn red">Suppr.</button>
+                  <button class="adm-btn" data-blog-id="${p.id}" data-action="edit" data-blog-payload='${escapeAttr(JSON.stringify(p))}'>Éditer</button>
+                  <button class="adm-btn red" data-blog-id="${p.id}" data-action="delete">Suppr.</button>
                 </td>
               </tr>
             `
           )
           .join('');
+
+        tBody.querySelectorAll('button[data-blog-id][data-action]').forEach((btn) => {
+          btn.addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            const id = btn.getAttribute('data-blog-id');
+            const action = btn.getAttribute('data-action');
+            if (!id || !action) return;
+
+            btn.disabled = true;
+            try {
+              if (action === 'delete') {
+                const ok = confirm('Supprimer cet article ?');
+                if (!ok) return;
+                await apiFetch(`/blog/${id}`, { method: 'DELETE' });
+                await loadAdminTables();
+                return;
+              }
+
+              if (action === 'edit') {
+                const modal = $('#adminModal');
+                if (!modal) return;
+                modal.dataset.blogId = id;
+                const payload = btn.getAttribute('data-blog-payload');
+                if (payload !== null) modal.dataset.blogPayload = payload;
+                openAdminModal('blog', 'edit');
+              }
+            } catch (e2) {
+              alert('Erreur blog: ' + (e2 && e2.message ? e2.message : e2));
+            } finally {
+              btn.disabled = false;
+            }
+          });
+        });
+      }
+    }
+
+    // Realisations
+    const realisationsBox = $('#adm-realisations-adm');
+    if (realisationsBox) {
+      const tBody = realisationsBox.querySelector('table tbody');
+      if (tBody) {
+        const data = await apiFetch('/realisations');
+        tBody.innerHTML = (data.items || [])
+          .map(
+            (p) => `
+              <tr>
+                <td>${String(p.id).padStart(2, '0')}</td>
+                <td>${escapeHtml(p.title)}</td>
+                <td>${escapeHtml(p.category)}</td>
+                <td>${escapeHtml(p.dateLabel || '')}</td>
+                <td>
+                  <button class="adm-btn" data-real-id="${p.id}" data-action="edit" data-real-payload='${escapeAttr(JSON.stringify(p))}'>Éditer</button>
+                  <button class="adm-btn red" data-real-id="${p.id}" data-action="delete">Suppr.</button>
+                </td>
+              </tr>
+            `
+          )
+          .join('');
+
+        tBody.querySelectorAll('button[data-real-id][data-action]').forEach((btn) => {
+          btn.addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            const id = btn.getAttribute('data-real-id');
+            const action = btn.getAttribute('data-action');
+            if (!id || !action) return;
+
+            btn.disabled = true;
+            try {
+              if (action === 'delete') {
+                const ok = confirm('Supprimer cette réalisation ?');
+                if (!ok) return;
+                await apiFetch(`/realisations/${id}`, { method: 'DELETE' });
+                await loadAdminTables();
+                return;
+              }
+
+              if (action === 'edit') {
+                const modal = $('#adminModal');
+                if (!modal) return;
+                modal.dataset.realisationsId = id;
+                const payload = btn.getAttribute('data-real-payload');
+                if (payload !== null) modal.dataset.realisationsPayload = payload;
+                openAdminModal('realisations', 'edit');
+              }
+            } catch (e2) {
+              alert('Erreur réalisation: ' + (e2 && e2.message ? e2.message : e2));
+            } finally {
+              btn.disabled = false;
+            }
+          });
+        });
       }
     }
 
@@ -497,6 +747,7 @@
   }
 
   async function loadAdminData() {
+    ensureAdminMessagesNavEntry();
     if (!adminRequireAuthOrLogin()) return;
 
     // Dashboard
@@ -517,8 +768,7 @@
 
   window.adminLogout = function () {
     clearToken();
-    // just show home; also hide admin tabs
-    showPage('home');
+    window.location.href = 'home.html';
   };
 
   // =====================
@@ -556,8 +806,7 @@
 
     if (titleEl) titleEl.textContent = title;
 
-    // For now only implement system/config UI.
-    // CRUD modals are out of scope for this quick configuration button.
+    // CRUD modals (blog + system/config)
     if (safeResource === 'system' && safeMode === 'config') {
       bodyEl.innerHTML = `
         <div style="display:grid; grid-template-columns:1fr; gap:14px;">
@@ -569,7 +818,6 @@
         </div>
       `;
 
-      // Load current settings (best-effort)
       apiFetch('/settings').then((data) => {
         const s = (data && data.settings) ? data.settings : {};
         const preview = s.previewText || '';
@@ -587,9 +835,6 @@
           const welcomeEl = $('#cfg-welcome');
           const welcome = welcomeEl && welcomeEl.value ? String(welcomeEl.value) : '';
 
-          // Store extra keys inside settings singleton via generic pick() (server only persists known keys).
-          // Workaround: use existing keys companyName/contactEmail for demo if backend doesn't accept extras.
-          // We'll still call PUT /settings with supported keys.
           await apiFetch('/settings', {
             method: 'PUT',
             body: {
@@ -606,10 +851,313 @@
       };
 
       if (saveBtn) saveBtn.onclick = onSave;
+
+    } else if (safeResource === 'blog') {
+      const isEdit = safeMode === 'edit';
+      if (safeMode === 'create' && modal && modal.dataset) {
+        delete modal.dataset.blogId;
+        delete modal.dataset.blogPayload;
+      }
+      const blogId = (modal && modal.dataset) ? (modal.dataset.blogId || null) : null;
+
+      bodyEl.innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr; gap:14px;">
+          <div class="form-group"><label>Titre</label><input type="text" id="blog-title" placeholder="Titre" /></div>
+          <div class="form-group"><label>Catégorie</label><input type="text" id="blog-category" placeholder="Catégorie" /></div>
+          <div class="form-group"><label>Date (label)</label><input type="text" id="blog-dateLabel" placeholder="Ex: 15 Jan 2025" /></div>
+          <div class="form-group"><label>Contenu</label><textarea id="blog-content" rows="8" placeholder="Contenu..." style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); outline:none; background:#0b1120; color:white;"></textarea></div>
+          <div id="blog-delete-row" style="display:${isEdit ? 'flex' : 'none'}; justify-content:flex-end; margin-top:6px;">
+            <button class="btn-red" id="blogModalDelete" style="padding:10px 16px; border-radius:10px; cursor:pointer;">Supprimer</button>
+          </div>
+        </div>
+      `;
+
+      const fillFromRow = (p) => {
+        const t = $('#blog-title');
+        const c = $('#blog-category');
+        const d = $('#blog-dateLabel');
+        const ct = $('#blog-content');
+        if (t) t.value = p && p.title ? p.title : '';
+        if (c) c.value = p && p.category ? p.category : '';
+        if (d) d.value = p && p.dateLabel ? p.dateLabel : '';
+        if (ct) ct.value = p && p.content ? p.content : '';
+      };
+
+      // If edit, try to populate using stored row snapshot in dataset
+      try {
+        const raw = modal && modal.dataset ? modal.dataset.blogPayload : null;
+        if (isEdit && raw) fillFromRow(JSON.parse(raw));
+      } catch (e) {}
+
+      const onSave = async () => {
+        const titleEl = $('#blog-title');
+        const categoryEl = $('#blog-category');
+        const dateEl = $('#blog-dateLabel');
+        const contentEl = $('#blog-content');
+
+        const payload = {
+          title: titleEl && titleEl.value ? String(titleEl.value).trim() : '',
+          category: categoryEl && categoryEl.value ? String(categoryEl.value).trim() : '',
+          dateLabel: dateEl && dateEl.value ? String(dateEl.value).trim() : '',
+          content: contentEl && contentEl.value ? String(contentEl.value) : ''
+        };
+
+        if (!payload.title || !payload.category) {
+          alert('Titre et catégorie sont requis.');
+          return;
+        }
+
+        try {
+          if (isEdit) {
+            if (!blogId) throw new Error('ID blog manquant');
+            await apiFetch(`/blog/${blogId}`, { method: 'PUT', body: payload });
+          } else {
+            await apiFetch('/blog', { method: 'POST', body: payload });
+          }
+
+          // reload and close
+          modal.style.display = 'none';
+          modal.style.alignItems = '';
+          await loadAdminTables();
+        } catch (e) {
+          alert('Erreur blog: ' + (e && e.message ? e.message : e));
+        }
+      };
+
+      if (saveBtn) saveBtn.onclick = onSave;
+
+      const delBtn = $('#blogModalDelete');
+      if (delBtn) {
+        delBtn.onclick = async () => {
+          if (!blogId) return;
+          const ok = confirm('Supprimer cet article ?');
+          if (!ok) return;
+          try {
+            await apiFetch(`/blog/${blogId}`, { method: 'DELETE' });
+            modal.style.display = 'none';
+            modal.style.alignItems = '';
+            await loadAdminTables();
+          } catch (e) {
+            alert('Erreur suppression: ' + (e && e.message ? e.message : e));
+          }
+        };
+      }
+
+    } else if (safeResource === 'realisations') {
+      const isEdit = safeMode === 'edit';
+      if (safeMode === 'create' && modal && modal.dataset) {
+        delete modal.dataset.realisationsId;
+        delete modal.dataset.realisationsPayload;
+      }
+      const realisationId = (modal && modal.dataset) ? (modal.dataset.realisationsId || null) : null;
+
+      bodyEl.innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr; gap:14px;">
+          <div class="form-group"><label>Titre</label><input type="text" id="real-title" placeholder="Titre" /></div>
+          <div class="form-group"><label>Catégorie</label><input type="text" id="real-category" placeholder="Catégorie" /></div>
+          <div class="form-group"><label>Date (label)</label><input type="text" id="real-dateLabel" placeholder="Ex: 02 Fév 2025" /></div>
+          <div class="form-group"><label>Image URL</label><input type="text" id="real-imageUrl" placeholder="https://..." /></div>
+          <div id="real-delete-row" style="display:${isEdit ? 'flex' : 'none'}; justify-content:flex-end; margin-top:6px;">
+            <button class="btn-red" id="realModalDelete" style="padding:10px 16px; border-radius:10px; cursor:pointer;">Supprimer</button>
+          </div>
+        </div>
+      `;
+
+      const fillFromRow = (p) => {
+        const t = $('#real-title');
+        const c = $('#real-category');
+        const d = $('#real-dateLabel');
+        const i = $('#real-imageUrl');
+        if (t) t.value = p && p.title ? p.title : '';
+        if (c) c.value = p && p.category ? p.category : '';
+        if (d) d.value = p && p.dateLabel ? p.dateLabel : '';
+        if (i) i.value = p && p.imageUrl ? p.imageUrl : '';
+      };
+
+      try {
+        const raw = modal && modal.dataset ? modal.dataset.realisationsPayload : null;
+        if (isEdit && raw) fillFromRow(JSON.parse(raw));
+      } catch (e) {}
+
+      const onSave = async () => {
+        const titleEl = $('#real-title');
+        const categoryEl = $('#real-category');
+        const dateEl = $('#real-dateLabel');
+        const imageEl = $('#real-imageUrl');
+
+        const payload = {
+          title: titleEl && titleEl.value ? String(titleEl.value).trim() : '',
+          category: categoryEl && categoryEl.value ? String(categoryEl.value).trim() : '',
+          dateLabel: dateEl && dateEl.value ? String(dateEl.value).trim() : '',
+          imageUrl: imageEl && imageEl.value ? String(imageEl.value).trim() : ''
+        };
+
+        if (!payload.title || !payload.category || !payload.imageUrl) {
+          alert('Titre, catégorie et image URL sont requis.');
+          return;
+        }
+
+        try {
+          if (isEdit) {
+            if (!realisationId) throw new Error('ID réalisation manquant');
+            await apiFetch(`/realisations/${realisationId}`, { method: 'PUT', body: payload });
+          } else {
+            await apiFetch('/realisations', { method: 'POST', body: payload });
+          }
+
+          modal.style.display = 'none';
+          modal.style.alignItems = '';
+          await loadAdminTables();
+        } catch (e) {
+          alert('Erreur réalisation: ' + (e && e.message ? e.message : e));
+        }
+      };
+
+      if (saveBtn) saveBtn.onclick = onSave;
+
+      const delBtnReal = $('#realModalDelete');
+      if (delBtnReal) {
+        delBtnReal.onclick = async () => {
+          if (!realisationId) return;
+          const ok = confirm('Supprimer cette réalisation ?');
+          if (!ok) return;
+          try {
+            await apiFetch(`/realisations/${realisationId}`, { method: 'DELETE' });
+            modal.style.display = 'none';
+            modal.style.alignItems = '';
+            await loadAdminTables();
+          } catch (e) {
+            alert('Erreur suppression: ' + (e && e.message ? e.message : e));
+          }
+        };
+      }
+
+    } else if (safeResource === 'services') {
+      const isEdit = safeMode === 'edit';
+      if (safeMode === 'create' && modal && modal.dataset) {
+        delete modal.dataset.serviceId;
+        delete modal.dataset.servicePayload;
+      }
+      const serviceId = (modal && modal.dataset) ? (modal.dataset.serviceId || null) : null;
+
+      bodyEl.innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr; gap:14px;">
+          <div class="form-group"><label>Nom</label><input type="text" id="service-name" placeholder="Nom du service" /></div>
+          <div class="form-group"><label>Catégorie</label><input type="text" id="service-category" placeholder="Catégorie" /></div>
+          <div class="form-group"><label>Statut</label><select id="service-status"><option value="active">Actif</option><option value="inactive">Inactif</option></select></div>
+          <div id="service-delete-row" style="display:${isEdit ? 'flex' : 'none'}; justify-content:flex-end; margin-top:6px;">
+            <button class="btn-red" id="serviceModalDelete" style="padding:10px 16px; border-radius:10px; cursor:pointer;">Supprimer</button>
+          </div>
+        </div>
+      `;
+
+      const fillFromRow = (p) => {
+        const elName = $('#service-name');
+        const elCategory = $('#service-category');
+        const elStatus = $('#service-status');
+        if (elName) elName.value = p && p.name ? p.name : '';
+        if (elCategory) elCategory.value = p && p.category ? p.category : '';
+        if (elStatus) elStatus.value = p && p.status ? p.status : 'active';
+      };
+
+      try {
+        const raw = modal && modal.dataset ? modal.dataset.servicePayload : null;
+        if (isEdit && raw) fillFromRow(JSON.parse(raw));
+      } catch (e) {}
+
+      const onSave = async () => {
+        const titleEl = $('#service-name');
+        const categoryEl = $('#service-category');
+        const statusEl = $('#service-status');
+
+        const payload = {
+          name: titleEl && titleEl.value ? String(titleEl.value).trim() : '',
+          category: categoryEl && categoryEl.value ? String(categoryEl.value).trim() : '',
+          status: statusEl && statusEl.value ? String(statusEl.value) : 'active'
+        };
+
+        if (!payload.name || !payload.category) {
+          alert('Nom et catégorie sont requis.');
+          return;
+        }
+
+        try {
+          if (isEdit) {
+            if (!serviceId) throw new Error('ID service manquant');
+            await apiFetch(`/services/${serviceId}`, { method: 'PUT', body: payload });
+          } else {
+            await apiFetch('/services', { method: 'POST', body: payload });
+          }
+
+          modal.style.display = 'none';
+          modal.style.alignItems = '';
+          await loadAdminTables();
+        } catch (e) {
+          alert('Erreur service: ' + (e && e.message ? e.message : e));
+        }
+      };
+
+      if (saveBtn) saveBtn.onclick = onSave;
+      const delBtnService = $('#serviceModalDelete');
+      if (delBtnService) {
+        delBtnService.onclick = async () => {
+          if (!serviceId) return;
+          const ok = confirm('Supprimer ce service ?');
+          if (!ok) return;
+          try {
+            await apiFetch(`/services/${serviceId}`, { method: 'DELETE' });
+            modal.style.display = 'none';
+            modal.style.alignItems = '';
+            await loadAdminTables();
+          } catch (e) {
+            alert('Erreur suppression: ' + (e && e.message ? e.message : e));
+          }
+        };
+      }
+
+    } else if (safeResource === 'gallery') {
+      bodyEl.innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr; gap:14px;">
+          <div class="form-group"><label>Image URL</label><input type="text" id="gallery-imageUrl" placeholder="https://..." /></div>
+        </div>
+      `;
+
+      const onSave = async () => {
+        const imageEl = $('#gallery-imageUrl');
+        const payload = {
+          imageUrl: imageEl && imageEl.value ? String(imageEl.value).trim() : ''
+        };
+
+        if (!payload.imageUrl) {
+          alert('Image URL est requise.');
+          return;
+        }
+
+        try {
+          await apiFetch('/gallery', { method: 'POST', body: payload });
+          modal.style.display = 'none';
+          modal.style.alignItems = '';
+          await loadAdminTables();
+        } catch (e) {
+          alert('Erreur galerie: ' + (e && e.message ? e.message : e));
+        }
+      };
+
+      if (saveBtn) saveBtn.onclick = onSave;
+
+    } else if (safeResource === 'users') {
+      bodyEl.innerHTML = `
+        <div style="color:rgba(255,255,255,0.8); line-height:1.6;">
+          La gestion des utilisateurs n'est pas disponible sur ce backend.
+          Si vous devez ajouter un utilisateur, utilisez la section d'administration du serveur ou le backend adapté.
+        </div>
+      `;
+      if (saveBtn) saveBtn.onclick = () => modal.style.display = 'none';
     } else {
       if (bodyEl) bodyEl.innerHTML = `<div style="color:rgba(255,255,255,0.7);">Modal non implémenté: ${escapeHtml(safeResource)}</div>`;
       if (saveBtn) saveBtn.onclick = () => modal.style.display = 'none';
     }
+
 
     // Close handlers
     if (closeBtn) closeBtn.onclick = () => (modal.style.display = 'none');
@@ -625,6 +1173,7 @@
   // =====================
 
   window.saveSettings = window.saveSettings || async function saveSettings() {
+
     const settingsBox = $('#adm-settings-adm');
     if (!settingsBox) return;
 
@@ -658,6 +1207,11 @@
         const link = $(`#navbar a[data-page="${id}"]`);
         if (link) link.classList.add('active-nav');
       }
+    }
+
+    // On admin page, verify auth immediately so the login form appears even on first load.
+    if (document.getElementById('page-admin')) {
+      loadAdminData().catch(() => {});
     }
 
     // Hide success banners initially (in case of cached HTML)

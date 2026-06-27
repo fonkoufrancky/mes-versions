@@ -21,6 +21,7 @@ const DEFAULT_DB = {
   services: [],
   realisations: [],
   devis: [],
+  messages: [],
   blog_posts: [],
   gallery_images: [],
   settings: {
@@ -35,7 +36,8 @@ const DEFAULT_DB = {
     realisationId: 0,
     blogId: 0,
     galleryId: 0,
-    devisId: 0
+    devisId: 0,
+    messageId: 0
   }
 };
 

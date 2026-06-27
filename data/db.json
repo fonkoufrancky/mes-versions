@@ -16,20 +16,6 @@
   ],
   "services": [
     {
-      "id": 1,
-      "name": "Génie Climatique",
-      "category": "Technique",
-      "status": "active",
-      "createdAt": "2026-06-27T11:21:09.278Z"
-    },
-    {
-      "id": 2,
-      "name": "Génie Électrique",
-      "category": "Technique",
-      "status": "active",
-      "createdAt": "2026-06-27T11:21:09.278Z"
-    },
-    {
       "id": 3,
       "name": "Architecture",
       "category": "Design",
@@ -69,7 +55,7 @@
       "fullName": "Jean Dupont",
       "service": "Génie Climatique",
       "budget": "5-10k€",
-      "status": "pending",
+      "status": "accepted",
       "dateISO": "2024-06-12T00:00:00.000Z"
     },
     {
@@ -103,6 +89,62 @@
       "budget": "<1k€",
       "status": "pending",
       "dateISO": "2024-06-08T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "fullName": "Test Dev",
+      "email": "test@example.com",
+      "phone": "",
+      "company": "",
+      "service": "Service",
+      "budget": "<1000",
+      "description": "",
+      "desiredTime": "",
+      "status": "pending",
+      "dateISO": "2026-06-27T17:30:01.672Z",
+      "createdAt": "2026-06-27T17:30:01.672Z"
+    },
+    {
+      "id": 7,
+      "fullName": "Test Browser",
+      "email": "browser@example.com",
+      "phone": "0123456789",
+      "company": "Test Company",
+      "service": "Génie Climatique (CVC)",
+      "budget": "Moins de 1 000 €",
+      "description": "Test de soumission depuis le navigateur",
+      "desiredTime": "Urgent",
+      "status": "pending",
+      "dateISO": "2026-06-27T17:35:01.775Z",
+      "createdAt": "2026-06-27T17:35:01.775Z"
+    },
+    {
+      "id": 8,
+      "fullName": "FFI",
+      "email": "ffi@gmail.com",
+      "phone": "689029640",
+      "company": "data info",
+      "service": "Génie Climatique (CVC)",
+      "budget": "1 000 – 5 000 €",
+      "description": "dsaqwerrtyuui",
+      "desiredTime": "3 mois",
+      "status": "accepted",
+      "dateISO": "2026-06-27T17:37:29.300Z",
+      "createdAt": "2026-06-27T17:37:29.300Z"
+    },
+    {
+      "id": 9,
+      "fullName": "ffi",
+      "email": "fonkou@gmail.com",
+      "phone": "23456789",
+      "company": "toto",
+      "service": "Architecture & Décoration",
+      "budget": "Plus de 50 000 €",
+      "description": "wertyuhgf",
+      "desiredTime": "2 mois",
+      "status": "accepted",
+      "dateISO": "2026-06-27T17:52:58.195Z",
+      "createdAt": "2026-06-27T17:52:58.195Z"
     }
   ],
   "blog_posts": [
@@ -153,8 +195,23 @@
   "counters": {
     "serviceId": 3,
     "realisationId": 3,
-    "blogId": 3,
+    "blogId": 4,
     "galleryId": 2,
-    "devisId": 5
-  }
+    "devisId": 9,
+    "messageId": 1
+  },
+  "messages": [
+    {
+      "id": 1,
+      "senderName": "Test",
+      "email": "test@example.com",
+      "phone": "",
+      "company": "",
+      "subject": "Test message",
+      "message": "Bonjour",
+      "status": "unread",
+      "createdAt": "2026-06-27T17:56:17.610Z",
+      "updatedAt": "2026-06-27T17:56:17.610Z"
+    }
+  ]
 }
