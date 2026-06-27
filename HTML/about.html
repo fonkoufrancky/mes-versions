@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KM Root Solutions – À Propos</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="home.html" class="nav-logo">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+        <rect x="18.5" y="21" width="5" height="10" rx="2" fill="#1E3D2F"/>
+        <path d="M21 31 L15 38 M21 31 L27 38 M21 31 L21 39" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+        <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+      </svg>
+      <div class="nav-brand">
+        <span class="nav-brand-name">KM ROOT</span>
+        <span class="nav-brand-sub">SOLUTIONS</span>
+      </div>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="home.html">Accueil</a></li>
+      <li><a href="about.html" data-page="about">À Propos</a></li>
+      <li class="has-dropdown">
+        <a href="services.html" data-page="services">Services ▾</a>
+        <div class="dropdown">
+          <a href="services.html">Génie Climatique</a>
+          <a href="services.html">Génie Électrique</a>
+          <a href="services.html">Électromécanique</a>
+          <a href="services.html">Architecture & Déco</a>
+          <a href="services.html">Formation & Coaching</a>
+        </div>
+      </li>
+      <li><a href="realisations.html">Réalisations</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="devis.html" class="btn-devis">DEMANDER UN DEVIS</a>
+      <span class="lang-switch">FR ▾</span>
+      <div class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobile()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="home.html" onclick="toggleMobile()">Accueil</a>
+  <a href="about.html" onclick="toggleMobile()">À Propos</a>
+  <a href="services.html" onclick="toggleMobile()">Services</a>
+  <a href="realisations.html" onclick="toggleMobile()">Réalisations</a>
+  <a href="blog.html" onclick="toggleMobile()">Blog</a>
+  <a href="contact.html" onclick="toggleMobile()">Contact</a>
+  <a href="devis.html" onclick="toggleMobile()" class="mobile-cta">Demander un devis</a>
+</div>
+
+<main id="app">
+
+<div class="page active" style="display:block;">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>À PROPOS DE NOUS</h1>
+      <div class="breadcrumb"><a href="home.html">Accueil</a> / À propos</div>
+    </div>
+  </div>
+
+  <section class="about-main">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img-wrap">
+          <div class="about-img" style="background:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600') center/cover no-repeat; border-radius:8px; height:340px;"></div>
+        </div>
+        <div class="about-text">
+          <div class="eyebrow">QUI SOMMES-NOUS ?</div>
+          <p>KM Root Solutions est une entreprise multiservices spécialisée dans le génie climatique, électrique, électromécanique, industriel, l'architecture, la décoration, la formation, le coaching et le nettoyage industriel.</p>
+          <p>Notre mission est d'offrir des solutions techniques fiables, innovantes et durables pour répondre aux besoins de nos clients.</p>
+          <p>Basée à Braine-l'Alleud en Belgique, notre équipe de professionnels qualifiés intervient avec rigueur et engagement dans chaque mission confiée.</p>
+          <a href="contact.html" class="btn-green mt-1">EN SAVOIR PLUS</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section dark-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Années d'expérience</div></div>
+        <div class="stat-item"><div class="stat-num">250+</div><div class="stat-label">Projets réalisés</div></div>
+        <div class="stat-item"><div class="stat-num">120+</div><div class="stat-label">Clients satisfaits</div></div>
+        <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Experts qualifiés</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-section">
+    <div class="container">
+      <div class="section-header center"><h2>NOS VALEURS</h2><div class="title-bar"></div></div>
+      <div class="values-grid">
+        <div class="value-card"><div class="value-icon">🌿</div><h3>Intégrité</h3><p>Nous agissons avec honnêteté et transparence dans toutes nos relations professionnelles.</p></div>
+        <div class="value-card"><div class="value-icon">🔬</div><h3>Excellence</h3><p>Nous visons la perfection dans chaque projet, quel que soit sa taille ou sa complexité.</p></div>
+        <div class="value-card"><div class="value-icon">🤝</div><h3>Partenariat</h3><p>Nous construisons des relations durables basées sur la confiance mutuelle avec nos clients.</p></div>
+        <div class="value-card"><div class="value-icon">🌍</div><h3>Durabilité</h3><p>Nous intégrons les principes de développement durable dans toutes nos activités.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <div class="container">
+      <div class="section-header center"><h2>NOTRE ÉQUIPE</h2><div class="title-bar"></div></div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#2E7D32,#7ED957)">KM</div>
+          <h4>K. Mukendi</h4>
+          <span>Directeur Général</span>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#1E3D2F,#2E7D32)">JD</div>
+          <h4>J. Dumont</h4>
+          <span>Ingénieur Climatique</span>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#7ED957,#2E7D32)">SL</div>
+          <h4>S. Laurent</h4>
+          <span>Architecte d'intérieur</span>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#111827,#2E7D32)">MB</div>
+          <h4>M. Bernard</h4>
+          <span>Ingénieur Électrique</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer id="main-footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
+              <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+              <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+              <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+              <rect x="18.5" y="22" width="5" height="8" rx="2" fill="#1E3D2F"/>
+            </svg>
+            <div>
+              <div class="footer-brand-name">KM ROOT SOLUTIONS</div>
+              <div class="footer-brand-slogan">Excellence technique et services intégrés</div>
+            </div>
+          </div>
+          <p class="footer-desc">Votre partenaire de confiance pour tous vos projets techniques, architecturaux et de services en Belgique.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn fb">f</a>
+            <a href="#" class="social-btn li">in</a>
+            <a href="#" class="social-btn wa">W</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>SERVICES</h4>
+          <ul>
+            <li><a href="services.html">Génie Climatique</a></li>
+            <li><a href="services.html">Génie Électrique</a></li>
+            <li><a href="services.html">Électromécanique</a></li>
+            <li><a href="services.html">Génie Industriel</a></li>
+            <li><a href="services.html">Architecture & Déco</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>LIENS RAPIDES</h4>
+          <ul>
+            <li><a href="home.html">Accueil</a></li>
+            <li><a href="about.html">À Propos</a></li>
+            <li><a href="realisations.html">Réalisations</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>CONTACT</h4>
+          <p>📍 Chaussée d'Alsemberg 270<br>1420 Braine-l'Alleud, Belgique</p>
+          <p>📞 +32 2 123 45 67</p>
+          <p>✉️ info@kmroot.com</p>
+          <p>🕐 Lun–Ven : 08h–17h</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2025 KM Root Solutions. Tous droits réservés.</span>
+      <span>
+        <a href="admin.html">Admin</a> |
+        <a href="#">Politique de confidentialité</a> |
+        <a href="#">Mentions légales</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="js/app.js"></script>
+</body>
+</html>
+

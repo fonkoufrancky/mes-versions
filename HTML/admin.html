@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KM Root Solutions – Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!-- ===== ADMIN APP ===== -->
+<main id="app">
+
+<div class="page active" id="page-admin">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-logo">
+        <svg width="32" height="32" viewBox="0 0 42 42" fill="none">
+          <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+          <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+          <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+          <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+          <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+          <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+          <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+          <rect x="18.5" y="22" width="5" height="8" rx="2" fill="#1E3D2F"/>
+        </svg>
+        <div>
+          <div class="admin-logo-name">KM ROOT</div>
+          <div class="admin-logo-role">Super Admin</div>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <a href="#" class="admin-nav-item active" onclick="showAdminTab('dashboard',this)">📊 Tableau de bord</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('services-adm',this)">🔧 Services</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('realisations-adm',this)">🏆 Réalisations</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('devis-adm',this)">📋 Devis</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('blog-adm',this)">📝 Blog</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('galerie-adm',this)">🖼️ Galerie</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('users-adm',this)">👥 Utilisateurs</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('settings-adm',this)">⚙️ Paramètres</a>
+        <a href="#" class="admin-nav-item" onclick="openAdminModal('system','config')">🛠️ Configuration</a>
+        <a href="#" class="admin-nav-item logout" onclick="adminLogout()">🚪 Déconnexion</a>
+
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+
+      <!-- Dashboard -->
+      <div class="admin-tab active" id="adm-dashboard">
+        <div class="admin-topbar">
+          <h1>TABLEAU DE BORD</h1>
+          <div class="admin-user">Admin</div>
+        </div>
+
+        <div class="adm-kpis">
+          <div class="kpi-card"><div class="kpi-num">0</div><div class="kpi-label">SERVICES</div><div class="kpi-sub">Total services</div></div>
+          <div class="kpi-card green"><div class="kpi-num">0</div><div class="kpi-label">DEVIS</div><div class="kpi-sub">Demandes reçues</div></div>
+          <div class="kpi-card"><div class="kpi-num">0</div><div class="kpi-label">PROJETS</div><div class="kpi-sub">Projets réalisés</div></div>
+          <div class="kpi-card green"><div class="kpi-num">0</div><div class="kpi-label">CLIENTS</div><div class="kpi-sub">Clients enregistrés</div></div>
+        </div>
+
+        <div class="adm-row">
+          <div class="adm-chart-box">
+            <h3>DEMANDES DE DEVIS (6 DERNIERS MOIS)</h3>
+            <canvas id="devisChart" width="400" height="180"></canvas>
+          </div>
+          <div class="adm-recent-box">
+            <h3>DERNIÈRES DEMANDES</h3>
+            <table class="adm-table">
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Admin -->
+      <div class="admin-tab" id="adm-services-adm">
+        <div class="admin-topbar"><h1>GESTION DES SERVICES</h1></div>
+        <button class="btn-green mb-1" onclick="openAdminModal('services','create')">+ Ajouter un service</button>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Nom</th><th>Catégorie</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Réalisations Admin -->
+      <div class="admin-tab" id="adm-realisations-adm">
+        <div class="admin-topbar"><h1>GESTION DES RÉALISATIONS</h1></div>
+        <button class="btn-green mb-1" onclick="openAdminModal('realisations','create')">+ Ajouter une réalisation</button>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Titre</th><th>Catégorie</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Devis Admin -->
+      <div class="admin-tab" id="adm-devis-adm">
+        <div class="admin-topbar"><h1>GESTION DES DEVIS</h1></div>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Client</th><th>Service</th><th>Budget</th><th>Date</th><th>Statut</th><th>Action</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Blog Admin -->
+      <div class="admin-tab" id="adm-blog-adm">
+        <div class="admin-topbar"><h1>GESTION DU BLOG</h1></div>
+        <button class="btn-green mb-1" onclick="openAdminModal('blog','create')">+ Nouvel article</button>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Titre</th><th>Catégorie</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Galerie Admin -->
+      <div class="admin-tab" id="adm-galerie-adm">
+        <div class="admin-topbar"><h1>GALERIE</h1></div>
+        <button class="btn-green mb-1" onclick="openAdminModal('gallery','create')">+ Ajouter des images</button>
+        <div class="admin-gallery"></div>
+      </div>
+
+      <!-- Users Admin -->
+      <div class="admin-tab" id="adm-users-adm">
+        <div class="admin-topbar"><h1>UTILISATEURS</h1></div>
+        <button class="btn-green mb-1" onclick="openAdminModal('users','create')">+ Ajouter un utilisateur</button>
+        <table class="adm-full-table">
+          <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Settings Admin -->
+      <div class="admin-tab" id="adm-settings-adm">
+        <div class="admin-topbar"><h1>PARAMÈTRES</h1></div>
+        <div class="settings-form">
+          <div class="form-group"><label>Nom de la société</label><input type="text" id="set-company" /></div>
+          <div class="form-group"><label>Email de contact</label><input type="email" id="set-email" /></div>
+          <div class="form-group"><label>Téléphone</label><input type="tel" id="set-phone" /></div>
+          <div class="form-group"><label>Adresse</label><input type="text" id="set-address" /></div>
+          <div class="form-group"><label>Slogan</label><input type="text" id="set-slogan" /></div>
+          <button class="btn-green" onclick="saveSettings()">Sauvegarder les modifications</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Admin (générique) -->
+<div id="adminModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:3000; align-items:center; justify-content:center;">
+  <div id="adminModalCard" style="width:min(720px,92vw); background:#111827; color:white; border:1px solid rgba(126,217,87,0.25); border-radius:12px; padding:18px; box-shadow:0 10px 40px rgba(0,0,0,0.45);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <div style="font-family:Montserrat, sans-serif; font-weight:900; letter-spacing:0.05em;" id="adminModalTitle">MODIFIER</div>
+      <button id="adminModalClose" style="background:transparent; color:rgba(255,255,255,0.6); border:0; font-size:20px; cursor:pointer;">×</button>
+    </div>
+    <div id="adminModalBody"></div>
+    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:14px;">
+      <button class="btn-green" id="adminModalSave">Enregistrer</button>
+      <button class="btn-red" id="adminModalCancel" style="background:#ef4444; color:white; border:0; padding:10px 16px; border-radius:10px; cursor:pointer;">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Force le bon backend (API sur port 3001)
+  window.API_BASE = 'http://localhost:3001/api';
+</script>
+<script src="../js/app.js"></script>
+</body>
+</html>
+

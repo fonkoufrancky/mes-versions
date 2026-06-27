@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KM Root Solutions – Demande de devis</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="home.html" class="nav-logo">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+        <rect x="18.5" y="21" width="5" height="10" rx="2" fill="#1E3D2F"/>
+        <path d="M21 31 L15 38 M21 31 L27 38 M21 31 L21 39" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+        <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+      </svg>
+      <div class="nav-brand">
+        <span class="nav-brand-name">KM ROOT</span>
+        <span class="nav-brand-sub">SOLUTIONS</span>
+      </div>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="home.html">Accueil</a></li>
+      <li><a href="about.html">À Propos</a></li>
+      <li class="has-dropdown">
+        <a href="services.html" data-page="services">Services ▾</a>
+        <div class="dropdown">
+          <a href="services.html">Génie Climatique</a>
+          <a href="services.html">Génie Électrique</a>
+          <a href="services.html">Électromécanique</a>
+          <a href="services.html">Architecture & Déco</a>
+          <a href="services.html">Formation & Coaching</a>
+        </div>
+      </li>
+      <li><a href="realisations.html">Réalisations</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="devis.html" class="btn-devis">DEMANDER UN DEVIS</a>
+      <span class="lang-switch">FR ▾</span>
+      <div class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobile()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="home.html" onclick="toggleMobile()">Accueil</a>
+  <a href="about.html" onclick="toggleMobile()">À Propos</a>
+  <a href="services.html" onclick="toggleMobile()">Services</a>
+  <a href="realisations.html" onclick="toggleMobile()">Réalisations</a>
+  <a href="blog.html" onclick="toggleMobile()">Blog</a>
+  <a href="contact.html" onclick="toggleMobile()">Contact</a>
+  <a href="devis.html" onclick="toggleMobile()" class="mobile-cta">Demander un devis</a>
+</div>
+
+<main id="app">
+
+<div class="page active" style="display:block;">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>DEMANDE DE DEVIS</h1>
+      <div class="breadcrumb"><a href="home.html">Accueil</a> / Demande de devis</div>
+    </div>
+  </div>
+
+  <section class="devis-main">
+    <div class="container">
+      <div class="devis-wrap">
+        <div class="form-row-2">
+          <div class="form-group"><label>Nom complet *</label><input type="text" placeholder="Votre nom"></div>
+          <div class="form-group"><label>Email *</label><input type="email" placeholder="votre@email.com"></div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group"><label>Téléphone</label><input type="tel" placeholder="Votre numéro"></div>
+          <div class="form-group"><label>Société</label><input type="text" placeholder="Nom de votre société"></div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Service souhaité</label>
+            <select>
+              <option value="">Sélectionnez un service</option>
+              <option>Génie Climatique (CVC)</option>
+              <option>Génie Électrique</option>
+              <option>Génie Électromécanique</option>
+              <option>Tuyauterie Industrielle</option>
+              <option>Architecture & Décoration</option>
+              <option>Formation & Coaching</option>
+              <option>Soins à domicile</option>
+              <option>Nettoyage Industriel</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Budget estimatif</label>
+            <select>
+              <option value="">Sélectionnez votre budget</option>
+              <option>Moins de 1 000 €</option>
+              <option>1 000 – 5 000 €</option>
+              <option>5 000 – 10 000 €</option>
+              <option>10 000 – 50 000 €</option>
+              <option>Plus de 50 000 €</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description du projet *</label>
+          <textarea rows="6" placeholder="Décrivez votre projet en détail..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Délai souhaité</label>
+          <input type="text" placeholder="Ex : dans 3 mois, urgent, etc.">
+        </div>
+
+        <button class="btn-green w-full" onclick="showSuccessDevis()">ENVOYER LA DEMANDE</button>
+        <div id="devisSuccess" style="display:none; color:#7ED957; padding:1rem; text-align:center; font-weight:600;">
+          ✅ Votre demande de devis a été envoyée ! Nous vous contacterons dans les 48h.
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer id="main-footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
+              <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+              <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+              <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+              <rect x="18.5" y="22" width="5" height="8" rx="2" fill="#1E3D2F"/>
+            </svg>
+            <div>
+              <div class="footer-brand-name">KM ROOT SOLUTIONS</div>
+              <div class="footer-brand-slogan">Excellence technique et services intégrés</div>
+            </div>
+          </div>
+          <p class="footer-desc">Votre partenaire de confiance pour tous vos projets techniques, architecturaux et de services en Belgique.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn fb">f</a>
+            <a href="#" class="social-btn li">in</a>
+            <a href="#" class="social-btn wa">W</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>SERVICES</h4>
+          <ul>
+            <li><a href="services.html">Génie Climatique</a></li>
+            <li><a href="services.html">Génie Électrique</a></li>
+            <li><a href="services.html">Électromécanique</a></li>
+            <li><a href="services.html">Génie Industriel</a></li>
+            <li><a href="services.html">Architecture & Déco</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>LIENS RAPIDES</h4>
+          <ul>
+            <li><a href="home.html">Accueil</a></li>
+            <li><a href="about.html">À Propos</a></li>
+            <li><a href="realisations.html">Réalisations</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>CONTACT</h4>
+          <p>📍 Chaussée d'Alsemberg 270<br>1420 Braine-l'Alleud, Belgique</p>
+          <p>📞 +32 2 123 45 67</p>
+          <p>✉️ info@kmroot.com</p>
+          <p>🕐 Lun–Ven : 08h–17h</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2025 KM Root Solutions. Tous droits réservés.</span>
+      <span>
+        <a href="admin.html">Admin</a> |
+        <a href="#">Politique de confidentialité</a> |
+        <a href="#">Mentions légales</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="js/app.js"></script>
+</body>
+</html>
+

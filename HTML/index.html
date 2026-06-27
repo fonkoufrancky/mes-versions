@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KM Root Solutions – Excellence technique et services intégrés</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="showPage('home')">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+        <rect x="18.5" y="21" width="5" height="10" rx="2" fill="#1E3D2F"/>
+        <path d="M21 31 L15 38 M21 31 L27 38 M21 31 L21 39" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+        <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+      </svg>
+      <div class="nav-brand">
+        <span class="nav-brand-name">KM ROOT</span>
+        <span class="nav-brand-sub">SOLUTIONS</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" onclick="showPage('home')" data-page="home">Accueil</a></li>
+      <li><a href="#" onclick="showPage('about')" data-page="about">À Propos</a></li>
+      <li class="has-dropdown">
+        <a href="#" onclick="showPage('services')">Services ▾</a>
+        <div class="dropdown">
+          <a href="#" onclick="showPage('services')">Génie Climatique</a>
+          <a href="#" onclick="showPage('services')">Génie Électrique</a>
+          <a href="#" onclick="showPage('services')">Électromécanique</a>
+          <a href="#" onclick="showPage('services')">Architecture & Déco</a>
+          <a href="#" onclick="showPage('services')">Formation & Coaching</a>
+        </div>
+      </li>
+      <li><a href="#" onclick="showPage('realisations')" data-page="realisations">Réalisations</a></li>
+      <li><a href="#" onclick="showPage('blog')" data-page="blog">Blog</a></li>
+      <li><a href="#" onclick="showPage('contact')" data-page="contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#" class="btn-devis" onclick="showPage('devis')">DEMANDER UN DEVIS</a>
+      <span class="lang-switch">FR ▾</span>
+      <div class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobile()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="showPage('home');toggleMobile()">Accueil</a>
+  <a href="#" onclick="showPage('about');toggleMobile()">À Propos</a>
+  <a href="#" onclick="showPage('services');toggleMobile()">Services</a>
+  <a href="#" onclick="showPage('realisations');toggleMobile()">Réalisations</a>
+  <a href="#" onclick="showPage('blog');toggleMobile()">Blog</a>
+  <a href="#" onclick="showPage('contact');toggleMobile()">Contact</a>
+  <a href="#" onclick="showPage('devis');toggleMobile()" class="mobile-cta">Demander un devis</a>
+</div>
+
+<!-- ===== PAGES CONTAINER ===== -->
+<main id="app">
+
+<!-- ==================== PAGE: ACCUEIL ==================== -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-img"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>EXCELLENCE TECHNIQUE<br><span>ET SERVICES INTÉGRÉS</span></h1>
+        <p>KM Root Solutions vous accompagne dans tous vos projets avec des solutions innovantes et durables.</p>
+        <div class="hero-btns">
+          <a href="#" class="btn-green" onclick="showPage('services')">NOS SERVICES</a>
+          <a href="#" class="btn-outline-white" onclick="showPage('contact')">NOUS CONTACTER</a>
+        </div>
+      </div>
+      <div class="hero-logo-big">
+        <svg width="260" height="260" viewBox="0 0 260 260" fill="none">
+          <circle cx="130" cy="130" r="128" fill="#1A3828" stroke="#7ED957" stroke-width="3"/>
+          <circle cx="130" cy="130" r="115" fill="none" stroke="rgba(126,217,87,0.2)" stroke-width="1"/>
+          <rect x="118" y="148" width="24" height="52" rx="8" fill="#1E3D2F"/>
+          <path d="M130 200 L105 228 M130 200 L155 228 M130 200 L130 232" stroke="#1A3828" stroke-width="5" stroke-linecap="round"/>
+          <path d="M128 212 L108 235 M132 212 L152 235" stroke="#1A3828" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="130" cy="110" r="62" fill="#2E7D32"/>
+          <circle cx="92" cy="125" r="42" fill="#2E7D32"/>
+          <circle cx="168" cy="125" r="42" fill="#2E7D32"/>
+          <circle cx="100" cy="95" r="38" fill="#388E3C"/>
+          <circle cx="160" cy="95" r="38" fill="#388E3C"/>
+          <circle cx="130" cy="78" r="40" fill="#7ED957"/>
+          <circle cx="115" cy="65" r="30" fill="#7ED957"/>
+          <circle cx="145" cy="65" r="30" fill="#7ED957"/>
+          <circle cx="130" cy="52" r="28" fill="#8EE968"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMAINES D'EXPERTISE -->
+  <section class="domains-section">
+    <div class="container">
+      <div class="section-header center">
+        <h2>NOS DOMAINES D'EXPERTISE</h2>
+        <div class="title-bar"></div>
+      </div>
+      <div class="domains-grid">
+        <div class="domain-card">
+          <div class="domain-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 30V20a12 12 0 0124 0v10" stroke="#7ED957" stroke-width="2" stroke-linecap="round"/><path d="M18 8V4M10 10L7 7M26 10l3-3" stroke="#7ED957" stroke-width="2" stroke-linecap="round"/><rect x="14" y="22" width="8" height="8" rx="1" stroke="#7ED957" stroke-width="1.5"/></svg>
+          </div>
+          <div class="domain-info">
+            <h3>Génie Climatique</h3>
+            <p>Chauffage, ventilation, climatisation et plomberie industrielle</p>
+          </div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4L4 12v12l14 8 14-8V12L18 4z" stroke="#7ED957" stroke-width="2" stroke-linejoin="round"/><path d="M18 4v20M4 12l14 8 14-8" stroke="#7ED957" stroke-width="1.5"/></svg>
+          </div>
+          <div class="domain-info">
+            <h3>Génie Électrique</h3>
+            <p>Études, installations électriques, maintenance et mise en conformité</p>
+          </div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="6" stroke="#7ED957" stroke-width="2"/><path d="M18 4v4M18 28v4M4 18h4M28 18h4M7 7l2.8 2.8M26.2 26.2L29 29M7 29l2.8-2.8M26.2 9.8L29 7" stroke="#7ED957" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="domain-info">
+            <h3>Génie Électromécanique</h3>
+            <p>Maintenance industrielle, dépannage et optimisation des équipements</p>
+          </div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M4 32h28M8 32V16l10-8 10 8v16" stroke="#7ED957" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="14" y="22" width="8" height="10" stroke="#7ED957" stroke-width="1.5"/></svg>
+          </div>
+          <div class="domain-info">
+            <h3>Génie Industriel</h3>
+            <p>Tuyauterie industrielle, piping et transport des fluides</p>
+          </div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="8" width="28" height="20" rx="2" stroke="#7ED957" stroke-width="2"/><path d="M12 16h12M12 21h8" stroke="#7ED957" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="domain-info">
+            <h3>Architecture & Décoration</h3>
+            <p>Architecture intérieure, décoration, design et aménagement d'espaces</p>
+          </div>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="6" stroke="#7ED957" stroke-width="2"/><path d="M6 30c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#7ED957" stroke-width="2" stroke-linecap="round"/><path d="M24 20l4 4-4 4" stroke="#7ED957" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="domain-info">
+            <h3>Formation & Coaching</h3>
+            <p>Formations techniques et coaching professionnel sur mesure</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI NOUS CHOISIR -->
+  <section class="why-section dark-section">
+    <div class="container">
+      <div class="section-header center">
+        <h2>POURQUOI NOUS CHOISIR ?</h2>
+        <div class="title-bar"></div>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">👥</div>
+          <h3>EXPERTISE</h3>
+          <p>Une équipe qualifiée et expérimentée</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">💡</div>
+          <h3>INNOVATION</h3>
+          <p>Des solutions modernes et durables</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">✅</div>
+          <h3>QUALITÉ</h3>
+          <p>Un travail rigoureux et des normes respectées</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">⭐</div>
+          <h3>SATISFACTION</h3>
+          <p>La satisfaction client est notre priorité</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RÉALISATIONS RÉCENTES -->
+  <section class="recent-section">
+    <div class="container">
+      <div class="section-header center">
+        <h2>NOS RÉALISATIONS RÉCENTES</h2>
+        <div class="title-bar"></div>
+      </div>
+      <div class="real-grid">
+        <div class="real-card">
+          <div class="real-img" style="background:#1a2a1a url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400') center/cover"></div>
+          <div class="real-info">
+            <h4>Installation HVAC</h4>
+            <span>Bâtiment Commercial</span>
+          </div>
+        </div>
+        <div class="real-card">
+          <div class="real-img" style="background:#1a2a1a url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400') center/cover"></div>
+          <div class="real-info">
+            <h4>Tableau électrique</h4>
+            <span>Industrie</span>
+          </div>
+        </div>
+        <div class="real-card">
+          <div class="real-img" style="background:#1a2a1a url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400') center/cover"></div>
+          <div class="real-info">
+            <h4>Maintenance industrielle</h4>
+            <span>Usine de production</span>
+          </div>
+        </div>
+        <div class="real-card">
+          <div class="real-img" style="background:#1a2a1a url('https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=400') center/cover"></div>
+          <div class="real-info">
+            <h4>Architecture intérieure</h4>
+            <span>Bureau moderne</span>
+          </div>
+        </div>
+      </div>
+      <div class="center mt-2">
+        <a href="#" class="btn-green" onclick="showPage('realisations')">VOIR TOUTES NOS RÉALISATIONS</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-section dark-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Années d'expérience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">250+</div>
+          <div class="stat-label">Projets réalisés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">120+</div>
+          <div class="stat-label">Clients satisfaits</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Experts qualifiés</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Prêt à démarrer votre projet ?</h2>
+        <p>Contactez-nous dès aujourd'hui pour un devis gratuit et sans engagement.</p>
+        <a href="#" class="btn-green" onclick="showPage('devis')">DEMANDER UN DEVIS GRATUIT</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+<!-- END PAGE HOME -->
+
+<!-- ==================== PAGE: À PROPOS ==================== -->
+<div class="page" id="page-about">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>À PROPOS DE NOUS</h1>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home')">Accueil</a> / À propos</div>
+    </div>
+  </div>
+
+  <section class="about-main">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img-wrap">
+          <div class="about-img" style="background:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600') center/cover no-repeat; border-radius:8px; height:340px;"></div>
+        </div>
+        <div class="about-text">
+          <div class="eyebrow">QUI SOMMES-NOUS ?</div>
+          <p>KM Root Solutions est une entreprise multiservices spécialisée dans le génie climatique, électrique, électromécanique, industriel, l'architecture, la décoration, la formation, le coaching et le nettoyage industriel.</p>
+          <p>Notre mission est d'offrir des solutions techniques fiables, innovantes et durables pour répondre aux besoins de nos clients.</p>
+          <p>Basée à Braine-l'Alleud en Belgique, notre équipe de professionnels qualifiés intervient avec rigueur et engagement dans chaque mission confiée.</p>
+          <a href="#" class="btn-green mt-1" onclick="showPage('contact')">EN SAVOIR PLUS</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section dark-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Années d'expérience</div></div>
+        <div class="stat-item"><div class="stat-num">250+</div><div class="stat-label">Projets réalisés</div></div>
+        <div class="stat-item"><div class="stat-num">120+</div><div class="stat-label">Clients satisfaits</div></div>
+        <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Experts qualifiés</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-section">
+    <div class="container">
+      <div class="section-header center"><h2>NOS VALEURS</h2><div class="title-bar"></div></div>
+      <div class="values-grid">
+        <div class="value-card"><div class="value-icon">🌿</div><h3>Intégrité</h3><p>Nous agissons avec honnêteté et transparence dans toutes nos relations professionnelles.</p></div>
+        <div class="value-card"><div class="value-icon">🔬</div><h3>Excellence</h3><p>Nous visons la perfection dans chaque projet, quel que soit sa taille ou sa complexité.</p></div>
+        <div class="value-card"><div class="value-icon">🤝</div><h3>Partenariat</h3><p>Nous construisons des relations durables basées sur la confiance mutuelle avec nos clients.</p></div>
+        <div class="value-card"><div class="value-icon">🌍</div><h3>Durabilité</h3><p>Nous intégrons les principes de développement durable dans toutes nos activités.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <div class="container">
+      <div class="section-header center"><h2>NOTRE ÉQUIPE</h2><div class="title-bar"></div></div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#2E7D32,#7ED957)">KM</div>
+          <h4>K. Mukendi</h4>
+          <span>Directeur Général</span>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#1E3D2F,#2E7D32)">JD</div>
+          <h4>J. Dumont</h4>
+          <span>Ingénieur Climatique</span>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#7ED957,#2E7D32)">SL</div>
+          <h4>S. Laurent</h4>
+          <span>Architecte d'intérieur</span>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#111827,#2E7D32)">MB</div>
+          <h4>M. Bernard</h4>
+          <span>Ingénieur Électrique</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PAGE: SERVICES ==================== -->
+<div class="page" id="page-services">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>SERVICES</h1>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home')">Accueil</a> / Services</div>
+    </div>
+  </div>
+
+  <section class="services-main">
+    <div class="container">
+      <div class="filter-tabs">
+        <button class="tab active" onclick="filterServices('all', this)">Tous</button>
+        <button class="tab" onclick="filterServices('climatique', this)">Génie Climatique</button>
+        <button class="tab" onclick="filterServices('electrique', this)">Génie Électrique</button>
+        <button class="tab" onclick="filterServices('electromeca', this)">Électromécanique</button>
+        <button class="tab" onclick="filterServices('industriel', this)">Industriel</button>
+        <button class="tab" onclick="filterServices('autres', this)">Autres</button>
+      </div>
+      <div class="services-cards-grid" id="servicesGrid">
+        <div class="service-card" data-cat="climatique">
+          <div class="sc-icon">❄️</div>
+          <h3>Génie Climatique</h3>
+          <p>Chauffage, ventilation, climatisation, HVAC... Conception, installation, entretien et dépannage de tous systèmes CVC.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="electrique">
+          <div class="sc-icon">⚡</div>
+          <h3>Génie Électrique</h3>
+          <p>Études, installations, maintenance, mise en conformité. Contrôle, exploitation et sécurité des installations électriques.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="electromeca">
+          <div class="sc-icon">⚙️</div>
+          <h3>Génie Électromécanique</h3>
+          <p>Dépannage, maintenance, automatisation. Conception et optimisation des équipements industriels modernes.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="industriel">
+          <div class="sc-icon">🏭</div>
+          <h3>Génie Industriel</h3>
+          <p>Piping, tuyauterie, transport des fluides. Fabrication et assemblage de systèmes pour liquides et gaz.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="autres">
+          <div class="sc-icon">🏛️</div>
+          <h3>Architecture & Décoration</h3>
+          <p>Design, aménagement, décoration intérieure. Architecte, coach déco, étalagiste, tapissier décorateur.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="autres">
+          <div class="sc-icon">📚</div>
+          <h3>Formation & Coaching</h3>
+          <p>Formations techniques et coaching professionnel sur mesure. Enseignement et développement personnel.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="autres">
+          <div class="sc-icon">🏠</div>
+          <h3>Soins à Domicile</h3>
+          <p>Soins à domicile, massage, esthétique et services à la personne pour votre bien-être quotidien.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="industriel">
+          <div class="sc-icon">🧹</div>
+          <h3>Nettoyage Industriel</h3>
+          <p>Nettoyage industriel et entretien des locaux professionnels. Solutions adaptées à chaque secteur.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+        <div class="service-card" data-cat="autres">
+          <div class="sc-icon">🛒</div>
+          <h3>Ventes & Conseil</h3>
+          <p>Orientation et conseil aux consommateurs, promotion des produits, conclusion de ventes sur mesure.</p>
+          <a href="#" class="sc-link" onclick="showPage('devis')">EN SAVOIR PLUS →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PAGE: RÉALISATIONS ==================== -->
+<div class="page" id="page-realisations">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>RÉALISATIONS</h1>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home')">Accueil</a> / Réalisations</div>
+    </div>
+  </div>
+
+  <section class="real-main">
+    <div class="container">
+      <div class="filter-tabs">
+        <button class="tab active" onclick="filterReal('all',this)">Tous</button>
+        <button class="tab" onclick="filterReal('climatique',this)">Génie Climatique</button>
+        <button class="tab" onclick="filterReal('electrique',this)">Génie Électrique</button>
+        <button class="tab" onclick="filterReal('industriel',this)">Industriel</button>
+        <button class="tab" onclick="filterReal('archi',this)">Architecture</button>
+      </div>
+      <div class="real-gallery" id="realGallery">
+        <div class="gal-item" data-cat="climatique">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Installation HVAC</h4><span>Bâtiment Commercial</span></div>
+        </div>
+        <div class="gal-item" data-cat="electrique">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Tableau Électrique</h4><span>Industrie</span></div>
+        </div>
+        <div class="gal-item" data-cat="industriel">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Maintenance Industrielle</h4><span>Usine de production</span></div>
+        </div>
+        <div class="gal-item" data-cat="archi">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Architecture Intérieure</h4><span>Bureau moderne</span></div>
+        </div>
+        <div class="gal-item" data-cat="climatique">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Système de Ventilation</h4><span>Hôpital</span></div>
+        </div>
+        <div class="gal-item" data-cat="electrique">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Installation Solaire</h4><span>Résidentiel</span></div>
+        </div>
+        <div class="gal-item" data-cat="archi">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Aménagement Boutique</h4><span>Commerce</span></div>
+        </div>
+        <div class="gal-item" data-cat="industriel">
+          <div class="gal-img" style="background:url('https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=500') center/cover"></div>
+          <div class="gal-overlay"><h4>Tuyauterie Industrielle</h4><span>Raffinerie</span></div>
+        </div>
+      </div>
+      <div class="center mt-2">
+        <a href="#" class="btn-green">VOIR PLUS DE PROJETS</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PAGE: BLOG ==================== -->
+<div class="page" id="page-blog">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>BLOG</h1>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home')">Accueil</a> / Blog</div>
+    </div>
+  </div>
+  <section class="blog-main">
+    <div class="container">
+      <div class="blog-grid">
+        <div class="blog-card">
+          <div class="blog-img" style="background:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400') center/cover"></div>
+          <div class="blog-body">
+            <span class="blog-cat">Génie Climatique</span>
+            <h3>Les nouvelles normes énergétiques 2025 pour les systèmes CVC</h3>
+            <p>Découvrez comment les nouvelles réglementations impactent l'installation et la maintenance des systèmes de chauffage et climatisation.</p>
+            <div class="blog-meta"><span>15 Jan 2025</span><a href="#">Lire →</a></div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-img" style="background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400') center/cover"></div>
+          <div class="blog-body">
+            <span class="blog-cat">Génie Électrique</span>
+            <h3>Transition vers les bornes de recharge électrique en entreprise</h3>
+            <p>Comment préparer votre infrastructure électrique à l'arrivée des véhicules électriques dans votre flotte.</p>
+            <div class="blog-meta"><span>08 Jan 2025</span><a href="#">Lire →</a></div>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-img" style="background:url('https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=400') center/cover"></div>
+          <div class="blog-body">
+            <span class="blog-cat">Architecture</span>
+            <h3>Tendances décoration intérieure 2025 : le biophilique</h3>
+            <p>Les espaces inspirés de la nature s'imposent comme la tendance majeure pour les bureaux et commerces.</p>
+            <div class="blog-meta"><span>02 Jan 2025</span><a href="#">Lire →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PAGE: CONTACT ==================== -->
+<div class="page" id="page-contact">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>CONTACT</h1>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home')">Accueil</a> / Contact</div>
+    </div>
+  </div>
+  <section class="contact-main">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info-col">
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <strong>ADRESSE</strong>
+              <p>Chaussée d'Alsemberg 270<br>1420 Braine-l'Alleud, Belgique</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <strong>TÉLÉPHONE</strong>
+              <p>+32 2 123 45 67</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <strong>EMAIL</strong>
+              <p><a href="mailto:info@kmrootsolutions.com">info@kmroot.com</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <strong>HORAIRES</strong>
+              <p>Lun – Ven : 08h00 – 17h00</p>
+            </div>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn fb">f</a>
+            <a href="#" class="social-btn li">in</a>
+            <a href="#" class="social-btn wa">W</a>
+          </div>
+          <div class="map-placeholder">
+            <div style="background:#e8f5e9; border:1px solid #c8e6c9; border-radius:6px; height:180px; display:flex; align-items:center; justify-content:center; color:#2E7D32; font-weight:600; font-size:0.9rem;">
+              📍 Braine-l'Alleud, Belgique
+            </div>
+          </div>
+        </div>
+        <div class="contact-form-col">
+          <h2>Envoyez-nous un message</h2>
+          <div class="form-row-2">
+            <div class="form-group"><label>Nom complet</label><input type="text" placeholder="Votre nom"></div>
+            <div class="form-group"><label>Email</label><input type="email" placeholder="votre@email.com"></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group"><label>Téléphone</label><input type="tel" placeholder="Votre numéro"></div>
+            <div class="form-group"><label>Société</label><input type="text" placeholder="Nom de votre société"></div>
+          </div>
+          <div class="form-group">
+            <label>Sujet</label>
+            <input type="text" placeholder="Objet de votre message">
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea rows="5" placeholder="Votre message..."></textarea>
+          </div>
+          <button class="btn-green w-full" onclick="showSuccessContact()">ENVOYER LE MESSAGE</button>
+          <div id="contactSuccess" style="display:none; color:#7ED957; padding:1rem; text-align:center; font-weight:600;">✅ Message envoyé avec succès ! Nous vous répondrons sous 24h.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PAGE: DEVIS ==================== -->
+<div class="page" id="page-devis">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>DEMANDE DE DEVIS</h1>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home')">Accueil</a> / Demande de devis</div>
+    </div>
+  </div>
+  <section class="devis-main">
+    <div class="container">
+      <div class="devis-wrap">
+        <div class="form-row-2">
+          <div class="form-group"><label>Nom complet *</label><input type="text" placeholder="Votre nom"></div>
+          <div class="form-group"><label>Email *</label><input type="email" placeholder="votre@email.com"></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group"><label>Téléphone</label><input type="tel" placeholder="Votre numéro"></div>
+          <div class="form-group"><label>Société</label><input type="text" placeholder="Nom de votre société"></div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Service souhaité</label>
+            <select>
+              <option value="">Sélectionnez un service</option>
+              <option>Génie Climatique (CVC)</option>
+              <option>Génie Électrique</option>
+              <option>Génie Électromécanique</option>
+              <option>Tuyauterie Industrielle</option>
+              <option>Architecture & Décoration</option>
+              <option>Formation & Coaching</option>
+              <option>Soins à domicile</option>
+              <option>Nettoyage Industriel</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Budget estimatif</label>
+            <select>
+              <option value="">Sélectionnez votre budget</option>
+              <option>Moins de 1 000 €</option>
+              <option>1 000 – 5 000 €</option>
+              <option>5 000 – 10 000 €</option>
+              <option>10 000 – 50 000 €</option>
+              <option>Plus de 50 000 €</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description du projet *</label>
+          <textarea rows="6" placeholder="Décrivez votre projet en détail..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Délai souhaité</label>
+          <input type="text" placeholder="Ex : dans 3 mois, urgent, etc.">
+        </div>
+        <button class="btn-green w-full" onclick="showSuccessDevis()">ENVOYER LA DEMANDE</button>
+        <div id="devisSuccess" style="display:none; color:#7ED957; padding:1rem; text-align:center; font-weight:600;">✅ Votre demande de devis a été envoyée ! Nous vous contacterons dans les 48h.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== PAGE: ADMIN ==================== -->
+<div class="page" id="page-admin">
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo">
+        <svg width="32" height="32" viewBox="0 0 42 42" fill="none">
+          <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+          <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+          <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+          <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+          <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+          <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+          <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+          <rect x="18.5" y="22" width="5" height="8" rx="2" fill="#1E3D2F"/>
+        </svg>
+        <div>
+          <div class="admin-logo-name">KM ROOT</div>
+          <div class="admin-logo-role">Super Admin</div>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <a href="#" class="admin-nav-item active" onclick="showAdminTab('dashboard',this)">📊 Tableau de bord</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('services-adm',this)">🔧 Services</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('realisations-adm',this)">🏆 Réalisations</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('devis-adm',this)">📋 Devis</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('blog-adm',this)">📝 Blog</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('galerie-adm',this)">🖼️ Galerie</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('users-adm',this)">👥 Utilisateurs</a>
+        <a href="#" class="admin-nav-item" onclick="showAdminTab('settings-adm',this)">⚙️ Paramètres</a>
+        <a href="#" class="admin-nav-item logout" onclick="showPage('home')">🚪 Déconnexion</a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="admin-main">
+      <!-- Dashboard -->
+      <div class="admin-tab active" id="adm-dashboard">
+        <div class="admin-topbar">
+          <h1>TABLEAU DE BORD</h1>
+          <div class="admin-user">Admin</div>
+        </div>
+        <div class="adm-kpis">
+          <div class="kpi-card"><div class="kpi-num">25</div><div class="kpi-label">SERVICES</div><div class="kpi-sub">Total services</div></div>
+          <div class="kpi-card green"><div class="kpi-num">120</div><div class="kpi-label">DEVIS</div><div class="kpi-sub">Demandes reçues</div></div>
+          <div class="kpi-card"><div class="kpi-num">48</div><div class="kpi-label">PROJETS</div><div class="kpi-sub">Projets réalisés</div></div>
+          <div class="kpi-card green"><div class="kpi-num">320</div><div class="kpi-label">CLIENTS</div><div class="kpi-sub">Clients enregistrés</div></div>
+        </div>
+        <div class="adm-row">
+          <div class="adm-chart-box">
+            <h3>DEMANDES DE DEVIS (6 DERNIERS MOIS)</h3>
+            <canvas id="devisChart" width="400" height="180"></canvas>
+          </div>
+          <div class="adm-recent-box">
+            <h3>DERNIÈRES DEMANDES</h3>
+            <table class="adm-table">
+              <tbody>
+                <tr><td><span class="adm-avatar">JD</span>Jean Dupont</td><td>12/06/2024</td></tr>
+                <tr><td><span class="adm-avatar">SA">SA</span>Société ABC</td><td>11/06/2024</td></tr>
+                <tr><td><span class="adm-avatar">MM</span>Marie Martin</td><td>10/06/2024</td></tr>
+                <tr><td><span class="adm-avatar">EX</span>Entreprise XYZ</td><td>09/06/2024</td></tr>
+                <tr><td><span class="adm-avatar">PD</span>Paul Durand</td><td>08/06/2024</td></tr>
+              </tbody>
+            </table>
+            <a href="#" class="adm-link" onclick="showAdminTab('devis-adm',null)">VOIR TOUTES LES DEMANDES →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Admin -->
+      <div class="admin-tab" id="adm-services-adm">
+        <div class="admin-topbar"><h1>GESTION DES SERVICES</h1></div>
+        <button class="btn-green mb-1">+ Ajouter un service</button>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Nom</th><th>Catégorie</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td>Génie Climatique</td><td>Technique</td><td><span class="badge green">Actif</span></td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+            <tr><td>02</td><td>Génie Électrique</td><td>Technique</td><td><span class="badge green">Actif</span></td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+            <tr><td>03</td><td>Architecture</td><td>Design</td><td><span class="badge green">Actif</span></td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+            <tr><td>04</td><td>Formation</td><td>Service</td><td><span class="badge yellow">Inactif</span></td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Réalisations Admin -->
+      <div class="admin-tab" id="adm-realisations-adm">
+        <div class="admin-topbar"><h1>GESTION DES RÉALISATIONS</h1></div>
+        <button class="btn-green mb-1">+ Ajouter une réalisation</button>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Titre</th><th>Catégorie</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td>Installation HVAC</td><td>Climatique</td><td>Jan 2025</td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+            <tr><td>02</td><td>Tableau Électrique</td><td>Électrique</td><td>Déc 2024</td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+            <tr><td>03</td><td>Architecture Intérieure</td><td>Design</td><td>Nov 2024</td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Devis Admin -->
+      <div class="admin-tab" id="adm-devis-adm">
+        <div class="admin-topbar"><h1>GESTION DES DEVIS</h1></div>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Client</th><th>Service</th><th>Budget</th><th>Date</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>#001</td><td>Jean Dupont</td><td>Génie Climatique</td><td>5-10k€</td><td>12/06/2024</td><td><span class="badge yellow">En attente</span></td></tr>
+            <tr><td>#002</td><td>Société ABC</td><td>Génie Électrique</td><td>10-50k€</td><td>11/06/2024</td><td><span class="badge green">Accepté</span></td></tr>
+            <tr><td>#003</td><td>Marie Martin</td><td>Architecture</td><td>1-5k€</td><td>10/06/2024</td><td><span class="badge green">Accepté</span></td></tr>
+            <tr><td>#004</td><td>Entreprise XYZ</td><td>Tuyauterie</td><td>>50k€</td><td>09/06/2024</td><td><span class="badge red">Refusé</span></td></tr>
+            <tr><td>#005</td><td>Paul Durand</td><td>Formation</td><td><1k€</td><td>08/06/2024</td><td><span class="badge yellow">En attente</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Blog Admin -->
+      <div class="admin-tab" id="adm-blog-adm">
+        <div class="admin-topbar"><h1>GESTION DU BLOG</h1></div>
+        <button class="btn-green mb-1">+ Nouvel article</button>
+        <table class="adm-full-table">
+          <thead><tr><th>ID</th><th>Titre</th><th>Catégorie</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td>Nouvelles normes énergétiques CVC 2025</td><td>Climatique</td><td>15 Jan 2025</td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+            <tr><td>02</td><td>Bornes de recharge en entreprise</td><td>Électrique</td><td>08 Jan 2025</td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+            <tr><td>03</td><td>Tendances décoration 2025</td><td>Architecture</td><td>02 Jan 2025</td><td><button class="adm-btn">Éditer</button> <button class="adm-btn red">Suppr.</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Galerie Admin -->
+      <div class="admin-tab" id="adm-galerie-adm">
+        <div class="admin-topbar"><h1>GALERIE</h1></div>
+        <button class="btn-green mb-1">+ Ajouter des images</button>
+        <div class="admin-gallery">
+          <div class="adm-gal-item" style="background:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=300') center/cover"></div>
+          <div class="adm-gal-item" style="background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300') center/cover"></div>
+          <div class="adm-gal-item" style="background:url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=300') center/cover"></div>
+          <div class="adm-gal-item" style="background:url('https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=300') center/cover"></div>
+        </div>
+      </div>
+
+      <!-- Users Admin -->
+      <div class="admin-tab" id="adm-users-adm">
+        <div class="admin-topbar"><h1>UTILISATEURS</h1></div>
+        <button class="btn-green mb-1">+ Ajouter un utilisateur</button>
+        <table class="adm-full-table">
+          <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>Admin</td><td>admin@kmroot.com</td><td>Super Admin</td><td><span class="badge green">Actif</span></td></tr>
+            <tr><td>Jean Dupont</td><td>j.dupont@kmroot.com</td><td>Éditeur</td><td><span class="badge green">Actif</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Settings Admin -->
+      <div class="admin-tab" id="adm-settings-adm">
+        <div class="admin-topbar"><h1>PARAMÈTRES</h1></div>
+        <div class="settings-form">
+          <div class="form-group"><label>Nom de la société</label><input type="text" value="KM Root Solutions"></div>
+          <div class="form-group"><label>Email de contact</label><input type="email" value="info@kmroot.com"></div>
+          <div class="form-group"><label>Téléphone</label><input type="tel" value="+32 2 123 45 67"></div>
+          <div class="form-group"><label>Adresse</label><input type="text" value="Chaussée d'Alsemberg 270, 1420 Braine-l'Alleud"></div>
+          <div class="form-group"><label>Slogan</label><input type="text" value="Excellence technique et services intégrés"></div>
+          <button class="btn-green">Sauvegarder les modifications</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main><!-- end #app -->
+
+<!-- ===== FOOTER ===== -->
+<footer id="main-footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
+              <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+              <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+              <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+              <rect x="18.5" y="22" width="5" height="8" rx="2" fill="#1E3D2F"/>
+            </svg>
+            <div>
+              <div class="footer-brand-name">KM ROOT SOLUTIONS</div>
+              <div class="footer-brand-slogan">Excellence technique et services intégrés</div>
+            </div>
+          </div>
+          <p class="footer-desc">Votre partenaire de confiance pour tous vos projets techniques, architecturaux et de services en Belgique.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn fb">f</a>
+            <a href="#" class="social-btn li">in</a>
+            <a href="#" class="social-btn wa">W</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>SERVICES</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('services')">Génie Climatique</a></li>
+            <li><a href="#" onclick="showPage('services')">Génie Électrique</a></li>
+            <li><a href="#" onclick="showPage('services')">Électromécanique</a></li>
+            <li><a href="#" onclick="showPage('services')">Génie Industriel</a></li>
+            <li><a href="#" onclick="showPage('services')">Architecture & Déco</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>LIENS RAPIDES</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('home')">Accueil</a></li>
+            <li><a href="#" onclick="showPage('about')">À Propos</a></li>
+            <li><a href="#" onclick="showPage('realisations')">Réalisations</a></li>
+            <li><a href="#" onclick="showPage('blog')">Blog</a></li>
+            <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>CONTACT</h4>
+          <p>📍 Chaussée d'Alsemberg 270<br>1420 Braine-l'Alleud, Belgique</p>
+          <p>📞 +32 2 123 45 67</p>
+          <p>✉️ info@kmroot.com</p>
+          <p>🕐 Lun–Ven : 08h–17h</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2025 KM Root Solutions. Tous droits réservés.</span>
+      <span>
+        <a href="admin.html">Admin</a> |
+        <a href="#">Politique de confidentialité</a> |
+        <a href="#">Mentions légales</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll to top -->
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Redirection vers la page d'accueil découpée
+  window.location.replace('home.html');
+</script>
+</body>
+</html>
+
