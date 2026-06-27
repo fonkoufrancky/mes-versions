@@ -197,8 +197,11 @@
   // ADMIN (API JSON)
   // =====================
 
-  const API_BASE = (window.API_BASE || '').toString().replace(/\/$/, '') ||
-    ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '0.0.0.0' || window.location.hostname === '::1' || window.location.hostname.endsWith('.localhost')) ? 'http://localhost:3001/api' : '/api');
+  const defaultApiBase = window.location.port === '3001'
+    ? '/api'
+    : `${window.location.protocol}//${window.location.hostname}:3001/api`;
+
+  const API_BASE = (window.API_BASE || '').toString().replace(/\/$/, '') || defaultApiBase;
 
   function getToken() {
     return window.localStorage.getItem('adminToken');
@@ -217,11 +220,20 @@
     const t = token || getToken();
     if (t) headers['Authorization'] = `Bearer ${t}`;
 
-    const res = await fetch(`${API_BASE}${path}`, {
-      method,
-      headers,
-      body: body ? JSON.stringify(body) : null
-    });
+    const url = `${API_BASE}${path}`;
+    console.debug('[apiFetch] url=', url, 'method=', method, 'token=', Boolean(t));
+
+    let res;
+    try {
+      res = await fetch(url, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : null
+      });
+    } catch (err) {
+      const errorMessage = err && err.message ? err.message : 'Network error';
+      throw new Error(`${errorMessage} (${url})`);
+    }
 
     const contentType = res.headers.get('content-type') || '';
     const data = contentType.includes('application/json') ? await res.json().catch(() => null) : await res.text().catch(() => null);
