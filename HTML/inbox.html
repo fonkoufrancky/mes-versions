@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KM Root Solutions – Inbox</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR (client) ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="showPage('home')">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+        <rect x="18.5" y="21" width="5" height="10" rx="2" fill="#1E3D2F"/>
+        <path d="M21 31 L15 38 M21 31 L27 38 M21 31 L21 39" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+        <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+      </svg>
+      <div class="nav-brand">
+        <span class="nav-brand-name">KM ROOT</span>
+        <span class="nav-brand-sub">SOLUTIONS</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" onclick="showPage('home')" data-page="home">Accueil</a></li>
+      <li><a href="#" onclick="showPage('about')" data-page="about">À Propos</a></li>
+      <li class="has-dropdown">
+        <a href="#" onclick="showPage('services')">Services ▾</a>
+        <div class="dropdown">
+          <a href="#" onclick="showPage('services')">Génie Climatique</a>
+          <a href="#" onclick="showPage('services')">Génie Électrique</a>
+          <a href="#" onclick="showPage('services')">Électromécanique</a>
+          <a href="#" onclick="showPage('services')">Architecture & Déco</a>
+          <a href="#" onclick="showPage('services')">Formation & Coaching</a>
+        </div>
+      </li>
+      <li><a href="#" onclick="showPage('realisations')" data-page="realisations">Réalisations</a></li>
+      <li><a href="#" onclick="showPage('blog')" data-page="blog">Blog</a></li>
+      <li><a href="#" onclick="showPage('contact')" data-page="contact">Contact</a></li>
+      <li><a href="#" onclick="showPage('inbox')" data-page="inbox" style="color:var(--green); font-weight:700;">Inbox</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#" class="btn-devis" onclick="showPage('devis')">DEMANDER UN DEVIS</a>
+      <span class="lang-switch">FR ▾</span>
+      <div class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobile()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="showPage('home');toggleMobile()">Accueil</a>
+  <a href="#" onclick="showPage('about');toggleMobile()">À Propos</a>
+  <a href="#" onclick="showPage('services');toggleMobile()">Services</a>
+  <a href="#" onclick="showPage('realisations');toggleMobile()">Réalisations</a>
+  <a href="#" onclick="showPage('blog');toggleMobile()">Blog</a>
+  <a href="#" onclick="showPage('contact');toggleMobile()">Contact</a>
+  <a href="#" onclick="showPage('inbox');toggleMobile()" style="color:var(--green); font-weight:800;">Inbox</a>
+  <a href="#" onclick="showPage('devis');toggleMobile()" class="mobile-cta">Demander un devis</a>
+</div>
+
+<!-- ===== PAGE ===== -->
+<main id="app">
+
+<div class="page active" id="page-inbox">
+  <div class="page-hero-small dark-section">
+    <div class="container">
+      <h1>MESSAGERIE – INBOX</h1>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home')">Accueil</a> / Inbox</div>
+    </div>
+  </div>
+
+  <section class="inbox-main">
+    <div class="container">
+
+      <div class="inbox-layout">
+        <div class="inbox-left">
+          <h2 class="inbox-title">Boîte de réception</h2>
+          <div class="inbox-subtitle" id="inboxSummary">Chargement…</div>
+
+          <div class="inbox-actions">
+            <button class="btn-green" onclick="window.inboxLoad(true)">Rafraîchir</button>
+          </div>
+
+          <div class="inbox-list" id="inboxList">
+            <div class="inbox-empty">—</div>
+          </div>
+        </div>
+
+        <div class="inbox-right">
+          <div class="inbox-thread" id="inboxThread">
+            <div class="inbox-thread-empty">
+              Sélectionnez un message à gauche pour voir son contenu.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inbox-hint" id="inboxHint" style="display:none;">
+        Pour des raisons d’accès, la liste des messages nécessite l’authentification admin.
+        <br/>Si vous êtes admin, connectez-vous via l’interface admin (onglet Messages).
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer id="main-footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
+              <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+              <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+              <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+              <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+              <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+              <rect x="18.5" y="22" width="5" height="8" rx="2" fill="#1E3D2F"/>
+            </svg>
+            <div>
+              <div class="footer-brand-name">KM ROOT SOLUTIONS</div>
+              <div class="footer-brand-slogan">Excellence technique et services intégrés</div>
+            </div>
+          </div>
+          <p class="footer-desc">Votre partenaire de confiance pour tous vos projets techniques, architecturaux et de services en Belgique.</p>
+        </div>
+        <div class="footer-col">
+          <h4>SERVICES</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('services')">Génie Climatique</a></li>
+            <li><a href="#" onclick="showPage('services')">Génie Électrique</a></li>
+            <li><a href="#" onclick="showPage('services')">Électromécanique</a></li>
+            <li><a href="#" onclick="showPage('services')">Génie Industriel</a></li>
+            <li><a href="#" onclick="showPage('services')">Architecture & Déco</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>LIENS RAPIDES</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('home')">Accueil</a></li>
+            <li><a href="#" onclick="showPage('about')">À Propos</a></li>
+            <li><a href="#" onclick="showPage('realisations')">Réalisations</a></li>
+            <li><a href="#" onclick="showPage('blog')">Blog</a></li>
+            <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>CONTACT</h4>
+          <p>📍 Chaussée d'Alsemberg 270<br>1420 Braine-l'Alleud, Belgique</p>
+          <p>📞 +32 2 123 45 67</p>
+          <p>✉️ info@kmroot.com</p>
+          <p>🕐 Lun–Ven : 08h–17h</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2025 KM Root Solutions. Tous droits réservés.</span>
+      <span>
+        <a href="../admin.html">Admin</a> |
+        <a href="#">Politique de confidentialité</a> |
+        <a href="#">Mentions légales</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Inbox is a standalone page: force the correct backend base.
+  window.API_BASE = window.location.port === '3001'
+    ? '/api'
+    : `${window.location.protocol}//${window.location.hostname}:3001/api`;
+</script>
+<script src="../js/app.js"></script>
+
+<script>
+  // Tiny inbox front-controller, compatible with existing admin apiFetch in js/app.js
+  (function () {
+    function $ (sel, root) { return (root || document).querySelector(sel); }
+    function $$ (sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
+
+    window.inboxLoad = async function inboxLoad(force = false) {
+      const listEl = $('#inboxList');
+      const threadEl = $('#inboxThread');
+      const summaryEl = $('#inboxSummary');
+      const hintEl = $('#inboxHint');
+
+      if (!listEl || !threadEl) return;
+
+      listEl.innerHTML = `<div class="inbox-empty">Chargement…</div>`;
+      if (summaryEl) summaryEl.textContent = 'Chargement…';
+      if (hintEl) hintEl.style.display = 'none';
+
+      // Prefer calling apiFetch if it exists in window (it does inside admin block in js/app.js)
+      const apiFetchFn = window.apiFetch;
+      if (typeof apiFetchFn !== 'function') {
+        listEl.innerHTML = `<div class="inbox-empty">Fonction apiFetch introuvable.</div>`;
+        if (summaryEl) summaryEl.textContent = '0 message';
+        return;
+      }
+
+      try {
+        const data = await apiFetchFn('/messages');
+        const items = data && data.items ? data.items : [];
+
+        if (summaryEl) summaryEl.textContent = `${items.length} message${items.length > 1 ? 's' : ''}`;
+
+        if (!items.length) {
+          listEl.innerHTML = `<div class="inbox-empty">Aucun message.</div>`;
+          threadEl.innerHTML = `<div class="inbox-thread-empty">Sélectionnez un message à gauche.</div>`;
+          return;
+        }
+
+        listEl.innerHTML = items
+          .map((m) => {
+            const created = m.createdAt ? new Date(m.createdAt) : null;
+            const date = created ? created.toLocaleDateString('fr-FR') : '';
+            const title = m.subject || '(Sans sujet)';
+            const preview = (m.message || '').slice(0, 60);
+            const unread = m.status === 'unread';
+            return `
+              <div class="inbox-item ${unread ? 'unread' : ''}" data-mid="${m.id}">
+                <div class="inbox-item-top">
+                  <div class="inbox-avatar">${String(m.senderName || 'K').slice(0, 2).toUpperCase()}</div>
+                  <div class="inbox-item-title">
+                    <div class="inbox-subject">${escapeHtml(title)}</div>
+                    <div class="inbox-meta">${escapeHtml(m.senderName || '')} ${date ? '• ' + escapeHtml(date) : ''}</div>
+                  </div>
+                  <div class="inbox-item-badge">${unread ? 'Nouveau' : 'Lu'}</div>
+                </div>
+                <div class="inbox-preview">${escapeHtml(preview)}${(m.message || '').length > 60 ? '…' : ''}</div>
+              </div>
+            `;
+          })
+          .join('');
+
+        const first = $('.inbox-item[data-mid]', listEl);
+        if (first) first.classList.add('selected');
+
+        const pick = (mid) => {
+          const msg = items.find((x) => String(x.id) === String(mid));
+          if (!msg) return;
+
+          const created = msg.createdAt ? new Date(msg.createdAt) : null;
+          const date = created ? created.toLocaleString('fr-FR') : '';
+          const status = msg.status === 'unread' ? 'Non lu' : 'Lu';
+
+          threadEl.innerHTML = `
+            <div class="inbox-thread-header">
+              <div>
+                <div class="inbox-thread-subject">${escapeHtml(msg.subject || '(Sans sujet)')}</div>
+                <div class="inbox-thread-meta">De <b>${escapeHtml(msg.senderName || '')}</b> • ${escapeHtml(date)}</div>
+              </div>
+              <div class="inbox-thread-status">${status}</div>
+            </div>
+            <div class="inbox-thread-body">${escapeHtml(msg.message || '')}</div>
+            <div class="inbox-thread-footer">
+              <div class="inbox-thread-actions">
+                <button class="btn-green" onclick="window.inboxMarkRead('${msg.id}')">Marquer comme lu</button>
+                <button class="btn-red" style="margin-left:10px;background:#ef4444;color:white;border:0;padding:12px 16px;border-radius:4px;cursor:pointer;" onclick="window.inboxDelete('${msg.id}')">Supprimer</button>
+              </div>
+            </div>
+          `;
+        };
+
+        // bind click
+        $$('.inbox-item[data-mid]', listEl).forEach((el) => {
+          el.addEventListener('click', () => {
+            $$('.inbox-item', listEl).forEach((x) => x.classList.remove('selected'));
+            el.classList.add('selected');
+            pick(el.dataset.mid);
+          });
+        });
+
+        if (first) pick(first.dataset.mid);
+
+      } catch (e) {
+        // Likely 401/403 (admin auth required)
+        if (hintEl) hintEl.style.display = 'block';
+        listEl.innerHTML = `<div class="inbox-empty">Impossible de charger les messages.</div>`;
+        if (summaryEl) summaryEl.textContent = '0 message';
+      }
+    };
+
+    window.inboxMarkRead = async function inboxMarkRead(id) {
+      if (!id) return;
+      try {
+        const apiFetchFn = window.apiFetch;
+        if (typeof apiFetchFn !== 'function') return;
+        await apiFetchFn(`/messages/${id}`, { method: 'PUT', body: { status: 'read' } });
+        await window.inboxLoad(false);
+      } catch (e) {
+        alert('Erreur: ' + (e && e.message ? e.message : e));
+      }
+    };
+
+    window.inboxDelete = async function inboxDelete(id) {
+      if (!id) return;
+      const ok = confirm('Supprimer ce message ?');
+      if (!ok) return;
+      try {
+        const apiFetchFn = window.apiFetch;
+        if (typeof apiFetchFn !== 'function') return;
+        await apiFetchFn(`/messages/${id}`, { method: 'DELETE' });
+        await window.inboxLoad(false);
+      } catch (e) {
+        alert('Erreur: ' + (e && e.message ? e.message : e));
+      }
+    };
+
+    function escapeHtml(str) {
+      return String(str === null || str === undefined ? '' : str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '<')
+        .replaceAll('>', '>')
+        .replaceAll('"', '"')
+        .replaceAll("'", '&#039;');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.inboxLoad(true).catch(()=>{});
+    });
+  })();
+</script>
+
+<style>
+  /* Inbox-specific styles (kept local to avoid breaking existing UI) */
+  .inbox-main { padding: 3rem 0 5rem; }
+  .inbox-layout {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .inbox-left {
+    background: #fff;
+    border: 1px solid rgba(209,213,219,0.8);
+    border-radius: 10px;
+    padding: 1.2rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .inbox-right {
+    background: #fff;
+    border: 1px solid rgba(209,213,219,0.8);
+    border-radius: 10px;
+    padding: 0.8rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    min-height: 420px;
+  }
+  .inbox-title { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--dark); margin-bottom: 0.5rem; }
+  .inbox-subtitle { color: var(--gray); font-size: 0.88rem; margin-bottom: 1rem; }
+
+  .inbox-actions { display:flex; justify-content:flex-end; margin-bottom: 1rem; }
+
+  .inbox-list { display:flex; flex-direction:column; gap: 0.7rem; max-height: 520px; overflow:auto; padding-right: 6px; }
+
+  .inbox-item { border: 1px solid rgba(209,213,219,0.8); border-radius: 10px; padding: 0.85rem; cursor:pointer; transition: border-color 0.2s, transform 0.2s, background 0.2s; background: #fff; }
+  .inbox-item:hover { border-color: var(--green); transform: translateY(-1px); }
+  .inbox-item.selected { border-color: var(--green); background: rgba(126,217,87,0.07); }
+
+  .inbox-item.unread .inbox-item-badge { background: rgba(126,217,87,0.15); color: #2E7D32; }
+
+  .inbox-item-top { display:flex; gap: 0.8rem; align-items:flex-start; }
+  .inbox-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(30,61,47,0.06); border:1px solid rgba(126,217,87,0.25); display:flex; align-items:center; justify-content:center; font-weight:800; font-family:'Montserrat',sans-serif; color: var(--green-mid); flex-shrink:0; }
+
+  .inbox-item-title { flex: 1; }
+  .inbox-subject { font-weight: 800; font-family:'Montserrat',sans-serif; margin-bottom: 0.2rem; color: var(--dark); }
+  .inbox-meta { font-size: 0.78rem; color: var(--gray); }
+
+  .inbox-item-badge { font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; background: rgba(107,114,128,0.12); color: var(--gray); flex-shrink:0; }
+
+  .inbox-preview { margin-top: 0.6rem; font-size: 0.85rem; color: rgba(107,114,128,0.95); line-height: 1.5; }
+
+  .inbox-empty { color: var(--gray); font-weight: 700; padding: 1rem; text-align:center; border: 1px dashed rgba(209,213,219,0.9); border-radius: 10px; background: rgba(243,244,246,0.7); }
+
+  .inbox-thread-empty { color: var(--gray); font-weight: 700; padding: 1.4rem; text-align:center; }
+
+  .inbox-thread-header { display:flex; justify-content:space-between; align-items:flex-start; gap: 1rem; padding: 0.5rem 0.5rem 1rem; border-bottom: 1px solid rgba(229,231,235,1); margin-bottom: 1rem; }
+  .inbox-thread-subject { font-family:'Montserrat',sans-serif; font-weight: 900; font-size: 1.05rem; color: var(--dark); margin-bottom: 0.25rem; }
+  .inbox-thread-meta { color: var(--gray); font-size: 0.85rem; }
+  .inbox-thread-status { background: rgba(126,217,87,0.14); color: #2E7D32; font-weight: 900; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem; border: 1px solid rgba(126,217,87,0.25); }
+
+  .inbox-thread-body { white-space: pre-wrap; padding: 0 0.6rem 1rem; color: var(--dark); font-size: 0.92rem; line-height: 1.75; }
+
+  @media (max-width: 900px) {
+    .inbox-layout { grid-template-columns: 1fr; }
+    .inbox-right { min-height: 300px; }
+  }
+</style>
+
+</body>
+</html>
+

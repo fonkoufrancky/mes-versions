@@ -145,6 +145,23 @@
       "status": "accepted",
       "dateISO": "2026-06-27T17:52:58.195Z",
       "createdAt": "2026-06-27T17:52:58.195Z"
+    },
+    {
+      "id": 10,
+      "fullName": "francky fonkou",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "service": "Génie Électrique",
+      "budget": "1 000 – 5 000 €",
+      "description": "frdsfjuhbjbh",
+      "desiredTime": "3 mois",
+      "status": "rejected",
+      "dateISO": "2026-06-27T18:35:55.842Z",
+      "createdAt": "2026-06-27T18:35:55.842Z",
+      "responseMessage": "Bonjour francky fonkou, votre demande de devis pour \"Génie Électrique\" a été refusée. Raison : Votre demande ne correspond pas aux critères actuels.",
+      "responseSentAt": "2026-06-29T15:16:22.689Z",
+      "rejectionReason": "Votre demande ne correspond pas aux critères actuels."
     }
   ],
   "blog_posts": [
@@ -183,6 +200,11 @@
       "id": 2,
       "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
       "createdAt": "2026-06-27T11:21:09.278Z"
+    },
+    {
+      "id": 3,
+      "imageUrl": "url",
+      "createdAt": "2026-06-29T15:28:49.692Z"
     }
   ],
   "settings": {
@@ -196,9 +218,9 @@
     "serviceId": 3,
     "realisationId": 3,
     "blogId": 4,
-    "galleryId": 2,
-    "devisId": 9,
-    "messageId": 1
+    "galleryId": 3,
+    "devisId": 10,
+    "messageId": 3
   },
   "messages": [
     {
@@ -212,6 +234,34 @@
       "status": "unread",
       "createdAt": "2026-06-27T17:56:17.610Z",
       "updatedAt": "2026-06-27T17:56:17.610Z"
+    },
+    {
+      "id": 2,
+      "senderName": "KM Root Solutions",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "subject": "Réponse à votre demande de devis",
+      "message": "Bonjour francky fonkou, votre demande de devis pour \"Génie Électrique\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "status": "unread",
+      "source": "devis",
+      "devisId": "10",
+      "createdAt": "2026-06-29T15:16:06.271Z",
+      "updatedAt": "2026-06-29T15:16:06.271Z"
+    },
+    {
+      "id": 3,
+      "senderName": "KM Root Solutions",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "subject": "Mise à jour de votre demande de devis",
+      "message": "Bonjour francky fonkou, votre demande de devis pour \"Génie Électrique\" a été refusée. Raison : Votre demande ne correspond pas aux critères actuels.",
+      "status": "unread",
+      "source": "devis",
+      "devisId": "10",
+      "createdAt": "2026-06-29T15:16:22.689Z",
+      "updatedAt": "2026-06-29T15:16:22.689Z"
     }
   ]
 }
