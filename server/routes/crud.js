@@ -24,12 +24,12 @@ function pick(obj, keys) {
   return out;
 }
 
-// Lister
-router.get('/services', requireAuth, (req, res) => {
+// Lister les contenus publics du site
+router.get('/services', (req, res) => {
   res.json({ items: list('services') });
 });
 
-router.get('/realisations', requireAuth, (req, res) => {
+router.get('/realisations', (req, res) => {
   res.json({ items: list('realisations') });
 });
 
@@ -37,7 +37,7 @@ router.get('/devis', requireAuth, (req, res) => {
   res.json({ items: list('devis') });
 });
 
-router.get('/blog', requireAuth, (req, res) => {
+router.get('/blog', (req, res) => {
   res.json({ items: list('blog_posts') });
 });
 
@@ -46,7 +46,7 @@ router.get('/messages', requireAuth, requireAdmin, (req, res) => {
   res.json({ items });
 });
 
-router.get('/gallery', requireAuth, (req, res) => {
+router.get('/gallery', (req, res) => {
   res.json({ items: list('gallery_images') });
 });
 
@@ -211,11 +211,10 @@ router.delete('/messages/:id', requireAuth, requireAdmin, (req, res) => {
   res.json({ ok });
 });
 
-// Devis create (public)
-router.post('/devis', (req, res) => {
+// Devis create (requires an authenticated client account)
+router.post('/devis', requireAuth, (req, res) => {
   const { fullName, email, service, budget, phone, company, description, desiredTime } = req.body || {};
 
-  // Basic validation (don’t block too hard)
   if (!fullName || !email || !service || !budget) {
     return res.status(400).json({ error: 'missing_required_fields' });
   }
@@ -235,6 +234,12 @@ router.post('/devis', (req, res) => {
     dateISO: new Date().toISOString(),
     createdAt: new Date().toISOString()
   };
+
+  if (req.user) {
+    row.clientId = req.user.userId;
+    row.clientEmail = req.user.email;
+    row.clientName = req.user.name || req.user.email;
+  }
 
   insert('devis', row);
   res.json({ item: row });
@@ -293,5 +298,4 @@ router.put('/devis/:id', requireAuth, requireAdmin, (req, res) => {
 });
 
 module.exports = router;
-
 

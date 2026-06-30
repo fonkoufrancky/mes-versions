@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KM Root Solutions – Mes messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+        <rect x="18.5" y="21" width="5" height="10" rx="2" fill="#1E3D2F"/>
+        <path d="M21 31 L15 38 M21 31 L27 38 M21 31 L21 39" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+        <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+      </svg>
+      <div class="nav-brand">
+        <span class="nav-brand-name">KM ROOT</span>
+        <span class="nav-brand-sub">SOLUTIONS</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="index.html#about">À Propos</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#realisations">Réalisations</a></li>
+      <li><a href="index.html#blog">Blog</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="compte.html">Compte</a></li>
+      <li><a href="messages.html" style="color:var(--green); font-weight:700;">Messages</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="compte.html" class="btn-devis" style="background:rgba(126,217,87,0.12);color:var(--green);border:1px solid rgba(126,217,87,0.25)">MON COMPTE</a>
+      <div class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobile()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Accueil</a>
+  <a href="index.html#about">À Propos</a>
+  <a href="index.html#services">Services</a>
+  <a href="index.html#realisations">Réalisations</a>
+  <a href="index.html#blog">Blog</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="compte.html" class="mobile-cta">Mon compte</a>
+</div>
+
+<main>
+  <section class="page-hero-small dark-section">
+    <div class="container">
+      <h1>MES MESSAGES</h1>
+      <div class="breadcrumb"><a href="index.html">Accueil</a> / Messages</div>
+    </div>
+  </section>
+
+  <section class="devis-main">
+    <div class="container">
+      <div id="clientMessagesStatus" style="margin-bottom:14px; font-weight:700; color:#1b5e20;"></div>
+      
+      <div id="clientMessagesLoginNotice" style="display:block; padding:16px; border-radius:12px; background:#fff7ed; border:1px solid #fdba74; color:#7c2d12; font-weight:600;">
+        <strong>Connexion requise</strong>
+        <span>Connectez-vous pour voir vos messages.</span>
+        <div style="margin-top:12px;">
+          <a href="compte.html" class="btn-green">Se connecter</a>
+        </div>
+      </div>
+
+      <div id="clientMessagesList" style="display:none; margin-top:24px;">
+        <div id="messagesContainer" style="display:grid; gap:16px;">
+          <div style="color:#666; text-align:center; padding:20px;">Chargement...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="./js/app.js?v=20260630-2"></script>
+</body>
+</html>

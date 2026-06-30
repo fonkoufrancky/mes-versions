@@ -577,6 +577,52 @@ h1 span { color: var(--green); }
   border-radius: 10px; padding: 3rem;
   box-shadow: var(--shadow);
 }
+.devis-auth-notice {
+  margin-bottom: 14px;
+  padding: 16px;
+  border: 1px solid #fdba74;
+  border-radius: 10px;
+  background: #fff7ed;
+  color: #7c2d12;
+  font-weight: 600;
+}
+.devis-auth-notice strong,
+.devis-auth-notice span { display: block; }
+.devis-auth-notice strong {
+  margin-bottom: 4px;
+  color: #9a3412;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+}
+.devis-auth-notice span {
+  color: #7c2d12;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.devis-auth-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.devis-auth-actions .btn-green,
+.devis-auth-secondary {
+  min-height: 40px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+}
+.devis-auth-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(126,217,87,0.45);
+  background: var(--white);
+  color: var(--green-dark);
+}
+.devis-auth-secondary:hover { background: #f5fff0; }
 
 /* ===== SOCIAL BUTTONS ===== */
 .social-links { display: flex; gap: 0.6rem; margin: 1.5rem 0; }

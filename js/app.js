@@ -26,6 +26,10 @@
 
     // Scroll to top for a nicer UX
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (pageId === 'compte') {
+      updateClientAccountUI();
+    }
   }
 
   function toggleMobile(forceOpen) {
@@ -126,6 +130,27 @@
     }, 5000);
   }
 
+  function showDevisAuthNotice(noticeEl, message) {
+    if (!noticeEl) return;
+
+    const accountTarget = document.getElementById('page-compte') ? '#' : 'compte.html';
+    const actionAttrs = accountTarget === '#'
+      ? 'href="#" onclick="event.preventDefault(); showPage(\'compte\')"'
+      : 'href="compte.html"';
+    const authMessage = message || "Pour demander un devis, connectez-vous ou créez un compte client si vous n'en avez pas encore.";
+
+    noticeEl.innerHTML = `
+      <strong>Connexion requise</strong>
+      <span>${escapeHtml(authMessage)}</span>
+      <div class="devis-auth-actions">
+        <a class="btn-green" ${actionAttrs}>Se connecter</a>
+        <a class="devis-auth-secondary" ${actionAttrs}>Créer un compte</a>
+      </div>
+    `;
+    noticeEl.classList.add('devis-auth-notice');
+    noticeEl.style.display = 'block';
+  }
+
   // Public: Devis submit
   window.submitDevis = async function submitDevis(ev) {
     if (ev && ev.preventDefault) ev.preventDefault();
@@ -133,9 +158,14 @@
     const page = $('#page-devis');
     if (!page) return;
 
-    const inputs = page.querySelectorAll('input, select, textarea');
-    // Collect by label order (current HTML has no ids). We will infer by placeholders/structure.
-    const getByPlaceholder = (ph) => Array.from(page.querySelectorAll('input, textarea')).find((el) => el.getAttribute('placeholder') === ph);
+    const clientToken = getClientToken();
+    const clientUser = getClientUser();
+    const noticeEl = $('#devisAccountNotice');
+
+    if (!clientToken || !clientUser) {
+      showDevisAuthNotice(noticeEl);
+      return;
+    }
 
     const fullNameEl = page.querySelector('input[type="text"][placeholder="Votre nom"]');
     const emailEl = page.querySelector('input[type="email"][placeholder="votre@email.com"]');
@@ -160,24 +190,35 @@
       desiredTime: desiredTimeEl && desiredTimeEl.value ? String(desiredTimeEl.value).trim() : ''
     };
 
-    // Very light validation
-    if (!payload.fullName || !payload.email || !payload.service || !payload.budget) {
-      alert('Merci de compléter les champs obligatoires (Nom, Email, Service, Budget).');
+    if (!payload.fullName || !payload.email || !payload.service || !payload.budget || !payload.description) {
+      if (noticeEl) {
+        noticeEl.textContent = 'Merci de compléter les champs obligatoires avant d’envoyer votre demande.';
+        noticeEl.style.display = 'block';
+      }
       return;
     }
 
     try {
-      const token = null;
-      await apiFetch('/devis', { method: 'POST', body: payload, token });
+      if (noticeEl) {
+        noticeEl.style.display = 'none';
+      }
+      await apiFetch('/devis', { method: 'POST', body: payload, token: clientToken });
       showSuccessDevis();
 
-      // Optional: reset form fields
       [fullNameEl, emailEl, phoneEl, companyEl, serviceEl, budgetEl, descEl, desiredTimeEl].forEach((el) => {
         if (!el) return;
         if ('value' in el) el.value = '';
       });
     } catch (e) {
-      alert('Erreur envoi devis: ' + (e && e.message ? e.message : e));
+      if (noticeEl) {
+        if (e && (e.message === 'invalid_token' || e.message === 'missing_token')) {
+          clearClientSession();
+          showDevisAuthNotice(noticeEl, 'Votre session a expiré. Reconnectez-vous pour envoyer votre demande de devis.');
+        } else {
+          noticeEl.textContent = `Impossible d’envoyer votre devis: ${e.message}`;
+          noticeEl.style.display = 'block';
+        }
+      }
     }
   };
 
@@ -215,6 +256,41 @@
     window.localStorage.removeItem('adminToken');
   }
 
+  function getClientToken() {
+    return window.localStorage.getItem('clientToken');
+  }
+
+  function setClientToken(token) {
+    window.localStorage.setItem('clientToken', token);
+  }
+
+  function clearClientToken() {
+    window.localStorage.removeItem('clientToken');
+  }
+
+  function clearClientSession() {
+    clearClientToken();
+    setClientUser(null);
+    updateClientAccountUI();
+  }
+
+  function getClientUser() {
+    try {
+      return JSON.parse(window.localStorage.getItem('clientUser') || 'null');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function setClientUser(user) {
+    if (!user) {
+      window.localStorage.removeItem('clientUser');
+      return;
+    }
+
+    window.localStorage.setItem('clientUser', JSON.stringify(user));
+  }
+
   async function apiFetch(path, { method = 'GET', body = null, token = null } = {}) {
     const headers = { 'Content-Type': 'application/json' };
     const t = token || getToken();
@@ -245,6 +321,339 @@
 
     return data;
   }
+
+  async function clientApiFetch(path, { method = 'GET', body = null, token = null } = {}) {
+    const headers = { 'Content-Type': 'application/json' };
+    const t = token || getClientToken();
+    if (t) headers['Authorization'] = `Bearer ${t}`;
+
+    const url = `${API_BASE}${path}`;
+    let res;
+    try {
+      res = await fetch(url, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : null
+      });
+    } catch (err) {
+      throw new Error(err && err.message ? err.message : 'Network error');
+    }
+
+    const contentType = res.headers.get('content-type') || '';
+    const data = contentType.includes('application/json') ? await res.json().catch(() => null) : await res.text().catch(() => null);
+
+    if (!res.ok) {
+      const msg = data && data.error ? data.error : `http_${res.status}`;
+      throw new Error(msg);
+    }
+
+    return data;
+  }
+
+function updateClientAccountUI() {
+     const statusEl = $('#clientAccountStatus');
+     const noticeEl = $('#clientQuoteNotice');
+     const formEl = $('#clientQuoteForm');
+     const user = getClientUser();
+     const loggedIn = Boolean(getClientToken());
+
+     if (statusEl) {
+       statusEl.textContent = loggedIn && user && user.name
+         ? `Bonjour ${user.name} 👋` 
+         : 'Vous devez créer un compte puis vous connecter pour demander un devis.';
+     }
+
+     if (noticeEl) noticeEl.style.display = loggedIn ? 'none' : 'block';
+     if (formEl) formEl.style.display = loggedIn ? 'block' : 'none';
+
+
+      const messagesLinkEl = $('#clientMessagesLink');
+      if (messagesLinkEl) messagesLinkEl.style.display = loggedIn ? 'inline-block' : 'none';
+     if (loggedIn && user) {
+       const nameEl = $('#clientDevisName');
+       const emailEl = $('#clientDevisEmail');
+       if (nameEl && !nameEl.value) nameEl.value = user.name || '';
+       if (emailEl && !emailEl.value) emailEl.value = user.email || '';
+     }
+
+     if (document.getElementById('clientDevisHistoryList')) {
+       loadClientDevisHistory().catch(() => {});
+     }
+
+     if (document.getElementById('clientMessagesList')) {
+       updateClientMessagesUI();
+     }
+   }
+
+   function updateClientMessagesUI() {
+     const statusEl = $('#clientMessagesStatus');
+     const loginNoticeEl = $('#clientMessagesLoginNotice');
+     const listEl = $('#clientMessagesList');
+     const containerEl = $('#messagesContainer');
+     const loggedIn = Boolean(getClientToken());
+
+     if (!loggedIn) {
+       if (loginNoticeEl) loginNoticeEl.style.display = 'block';
+       if (listEl) listEl.style.display = 'none';
+       return;
+     }
+
+     if (loginNoticeEl) loginNoticeEl.style.display = 'none';
+     if (listEl) listEl.style.display = 'block';
+     if (statusEl) statusEl.textContent = '';
+
+     loadClientMessages().catch((e) => {
+       if (containerEl) {
+         containerEl.innerHTML = `<div style="color:#b91c1c;">Impossible de charger vos messages : ${escapeHtml(e.message || e)}</div>`;
+       }
+     });
+   }
+
+   async function loadClientMessages() {
+     const container = document.getElementById('messagesContainer');
+     if (!container) return;
+
+     const token = getClientToken();
+     const currentUser = getClientUser();
+     const currentEmail = currentUser && currentUser.email ? currentUser.email : '';
+
+     try {
+       const data = await clientApiFetch('/messages', { method: 'GET', token });
+       const items = Array.isArray(data && data.items) ? data.items : [];
+       const clientMessages = items.filter((item) => String(item.email || '').toLowerCase() === String(currentEmail).toLowerCase());
+
+       if (!clientMessages.length) {
+         container.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">Aucun message reçu pour le moment.</div>';
+         return;
+       }
+
+       container.innerHTML = `
+         <div style="display:grid; gap:12px;">
+           ${clientMessages.map((msg) => {
+             const dateLabel = msg.createdAt ? new Date(msg.createdAt).toLocaleString('fr-FR') : '';
+             const statusLabel = msg.status === 'read' ? '<span class="badge green">Lu</span>' : '<span class="badge yellow">Non lu</span>';
+             const sourceLabel = msg.source === 'devis' ? `Réponse à votre devis #${msg.devisId || ''}` : '';
+             return `
+               <div style="padding:16px; border:1px solid #e3ebdf; border-radius:12px; background:#fbfdf8;">
+                 <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+                   <strong>${escapeHtml(msg.subject || 'Message')}</strong>
+                   ${statusLabel}
+                 </div>
+                 ${sourceLabel ? `<div style="font-size:0.85rem; color:#2E7D32; margin-bottom:6px;">${escapeHtml(sourceLabel)}</div>` : ''}
+                 <div style="font-size:0.95rem; color:#333; margin-bottom:8px; line-height:1.5;">${escapeHtml(msg.message || '')}</div>
+                 <div style="font-size:0.8rem; color:#666;">Reçu le : ${escapeHtml(dateLabel)}</div>
+               </div>
+             `;
+           }).join('')}
+         </div>
+       `;
+     } catch (e) {
+       container.innerHTML = `<div style="color:#b91c1c;">Erreur lors du chargement des messages : ${escapeHtml(e.message || e)}</div>`;
+     }
+   }
+
+  window.submitClientRegister = async function submitClientRegister(ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+
+    const nameEl = $('#accountRegisterName');
+    const emailEl = $('#accountRegisterEmail');
+    const passwordEl = $('#accountRegisterPassword');
+    const msgEl = $('#accountRegisterMessage');
+
+    const name = nameEl && nameEl.value ? String(nameEl.value).trim() : '';
+    const email = emailEl && emailEl.value ? String(emailEl.value).trim() : '';
+    const password = passwordEl && passwordEl.value ? String(passwordEl.value) : '';
+
+    if (!name || !email || !password) {
+      if (msgEl) {
+        msgEl.textContent = 'Merci de remplir tous les champs.';
+        msgEl.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      const data = await clientApiFetch('/auth/register', {
+        method: 'POST',
+        body: { name, email, password }
+      });
+      setClientToken(data.token);
+      setClientUser(data.user || { name, email, role: 'client' });
+      updateClientAccountUI();
+      const devisNotice = $('#devisAccountNotice');
+      if (devisNotice) devisNotice.style.display = 'none';
+      if (msgEl) {
+        msgEl.textContent = 'Compte créé avec succès. Vous pouvez maintenant demander un devis.';
+        msgEl.style.display = 'block';
+      }
+    } catch (e) {
+      if (msgEl) {
+        msgEl.textContent = `Impossible de créer le compte: ${e.message}`;
+        msgEl.style.display = 'block';
+      }
+    }
+  };
+
+  window.submitClientLogin = async function submitClientLogin(ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+
+    const emailEl = $('#accountLoginEmail');
+    const passwordEl = $('#accountLoginPassword');
+    const msgEl = $('#accountLoginMessage');
+
+    const email = emailEl && emailEl.value ? String(emailEl.value).trim() : '';
+    const password = passwordEl && passwordEl.value ? String(passwordEl.value) : '';
+
+    if (!email || !password) {
+      if (msgEl) {
+        msgEl.textContent = 'Merci d’entrer votre email et votre mot de passe.';
+        msgEl.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      const data = await clientApiFetch('/auth/login', {
+        method: 'POST',
+        body: { email, password }
+      });
+      setClientToken(data.token);
+      setClientUser(data.user || { email, role: 'client' });
+      updateClientAccountUI();
+      const devisNotice = $('#devisAccountNotice');
+      if (devisNotice) devisNotice.style.display = 'none';
+      if (msgEl) {
+        msgEl.textContent = 'Connexion réussie. Vous pouvez envoyer votre demande de devis.';
+        msgEl.style.display = 'block';
+      }
+    } catch (e) {
+      if (msgEl) {
+        msgEl.textContent = `Connexion impossible: ${e.message}`;
+        msgEl.style.display = 'block';
+      }
+    }
+  };
+
+  async function loadClientDevisHistory() {
+    const container = document.getElementById('clientDevisHistoryList');
+    if (!container) return;
+
+    const token = getClientToken();
+    if (!token) {
+      container.innerHTML = '<div style="color:#666;">Connectez-vous pour voir l’historique de vos demandes.</div>';
+      return;
+    }
+
+    try {
+      const data = await clientApiFetch('/devis', { method: 'GET', token });
+      const items = Array.isArray(data && data.items) ? data.items : [];
+      const currentUser = getClientUser();
+      const currentEmail = currentUser && currentUser.email ? currentUser.email : '';
+      const clientItems = items.filter((item) => String(item.clientEmail || item.email || '').toLowerCase() === String(currentEmail).toLowerCase());
+
+      if (!clientItems.length) {
+        container.innerHTML = '<div style="color:#666;">Aucune demande n’a encore été envoyée.</div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <div style="display:grid; gap:12px;">
+          ${clientItems.map((item) => {
+            const statusLabel = item.status === 'accepted' ? 'Accepté' : item.status === 'rejected' ? 'Refusé' : 'En attente';
+            return `
+              <div style="padding:14px; border:1px solid #e3ebdf; border-radius:12px; background:#fbfdf8;">
+                <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:6px;">
+                  <strong>${escapeHtml(item.service || 'Demande')}</strong>
+                  <span style="font-size:0.9rem; color:#2e7d32; font-weight:700;">${escapeHtml(statusLabel)}</span>
+                </div>
+                <div style="font-size:0.95rem; color:#555;">Budget : ${escapeHtml(item.budget || '-')}</div>
+                <div style="font-size:0.95rem; color:#555;">Envoyée le : ${escapeHtml(item.createdAt ? new Date(item.createdAt).toLocaleDateString('fr-FR') : '-')}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    } catch (e) {
+      if (e && (e.message === 'invalid_token' || e.message === 'missing_token')) {
+        clearClientSession();
+        container.innerHTML = '<div style="color:#b91c1c;">Votre session a expiré. Reconnectez-vous pour voir vos demandes.</div>';
+        return;
+      }
+
+      container.innerHTML = `<div style="color:#b91c1c;">Impossible de charger vos demandes : ${escapeHtml(e.message || e)}</div>`;
+    }
+  }
+
+  window.submitClientLogout = function submitClientLogout(ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+    clearClientToken();
+    setClientUser(null);
+    updateClientAccountUI();
+    const msgEl = $('#accountLoginMessage');
+    if (msgEl) {
+      msgEl.textContent = 'Vous avez été déconnecté.';
+      msgEl.style.display = 'block';
+    }
+  };
+
+  window.submitClientDevis = async function submitClientDevis(ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+
+    const token = getClientToken();
+    if (!token) {
+      const msgEl = $('#accountDevisMessage');
+      if (msgEl) {
+        msgEl.textContent = 'Connectez-vous d’abord pour envoyer votre demande.';
+        msgEl.style.display = 'block';
+      }
+      return;
+    }
+
+    const payload = {
+      fullName: $('#clientDevisName') && $('#clientDevisName').value ? String($('#clientDevisName').value).trim() : '',
+      email: $('#clientDevisEmail') && $('#clientDevisEmail').value ? String($('#clientDevisEmail').value).trim() : '',
+      phone: $('#clientDevisPhone') && $('#clientDevisPhone').value ? String($('#clientDevisPhone').value).trim() : '',
+      company: $('#clientDevisCompany') && $('#clientDevisCompany').value ? String($('#clientDevisCompany').value).trim() : '',
+      service: $('#clientDevisService') ? String($('#clientDevisService').value || '') : '',
+      budget: $('#clientDevisBudget') ? String($('#clientDevisBudget').value || '') : '',
+      description: $('#clientDevisDescription') && $('#clientDevisDescription').value ? String($('#clientDevisDescription').value).trim() : '',
+      desiredTime: $('#clientDevisTime') && $('#clientDevisTime').value ? String($('#clientDevisTime').value).trim() : ''
+    };
+
+    if (!payload.fullName || !payload.email || !payload.service || !payload.budget || !payload.description) {
+      const msgEl = $('#accountDevisMessage');
+      if (msgEl) {
+        msgEl.textContent = 'Merci de compléter au minimum votre nom, email, service, budget et description.';
+        msgEl.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      await clientApiFetch('/devis', { method: 'POST', body: payload, token });
+      const msgEl = $('#accountDevisMessage');
+      if (msgEl) {
+        msgEl.textContent = 'Votre demande de devis a bien été envoyée. Nous vous recontacterons bientôt.';
+        msgEl.style.display = 'block';
+      }
+      ['#clientDevisName', '#clientDevisPhone', '#clientDevisCompany', '#clientDevisService', '#clientDevisBudget', '#clientDevisDescription', '#clientDevisTime'].forEach((sel) => {
+        const el = $(sel);
+        if (el) el.value = '';
+      });
+      loadClientDevisHistory().catch(() => {});
+    } catch (e) {
+      const msgEl = $('#accountDevisMessage');
+      if (msgEl) {
+        if (e && (e.message === 'invalid_token' || e.message === 'missing_token')) {
+          clearClientSession();
+          msgEl.textContent = 'Votre session a expiré. Reconnectez-vous pour envoyer votre demande.';
+        } else {
+          msgEl.textContent = `Erreur lors de l’envoi: ${e.message}`;
+        }
+        msgEl.style.display = 'block';
+      }
+    }
+  };
 
   function ensureAdminLoginUI() {
     // Login modal is created once.
@@ -1130,7 +1539,7 @@
     } else if (safeResource === 'gallery') {
       bodyEl.innerHTML = `
         <div style="display:grid; grid-template-columns:1fr; gap:14px;">
-          <div class="form-group"><label>Image URL</label><input type="text" id="gallery-imageUrl" placeholder="https://..." /></div>
+          <div class="form-group"><label>Image URL</label><input type="file" id="gallery-imageUrl" placeholder="https://..." /></div>
         </div>
       `;
 
@@ -1206,9 +1615,119 @@
     await apiFetch('/settings', { method: 'PUT', body: payload });
   };
 
+  function replaceRecentRealisations(items) {
+    const container = document.querySelector('.recent-section .real-grid');
+    if (!container) return;
+
+    container.innerHTML = (items || []).slice(0, 4).map((p) => {
+      const title = p.title || '';
+      const cat = p.category || '';
+      const img = p.imageUrl || '';
+      const bg = img
+        ? `background:#1a2a1a url('${escapeAttr(img)}') center/cover`
+        : 'background:#1a2a1a';
+
+      return `
+        <div class="real-card">
+          <div class="real-img" style="${bg}"></div>
+          <div class="real-info"><h4>${escapeHtml(title)}</h4><span>${escapeHtml(cat)}</span></div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function replaceHomeBlog(items) {
+    const container = document.querySelector('.home-blog-grid');
+    if (!container) return;
+
+    container.innerHTML = (items || []).slice(0, 3).map((p) => {
+      const title = p.title || '';
+      const cat = p.category || '';
+      const date = p.dateLabel || '';
+      // HTML home.html doesn't have a blog section, so this is best-effort.
+      return `
+        <div class="blog-card">
+          <div class="blog-img" style="background:#1a2a1a;"></div>
+          <div class="blog-body">
+            <span class="blog-cat">${escapeHtml(cat)}</span>
+            <h3>${escapeHtml(title)}</h3>
+            <div class="blog-meta"><span>${escapeHtml(date)}</span><a href="blog.html">Lire →</a></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function showClientDevisNotification(devisItems) {
+    // home.html contient #devisNotifications
+    const wrap = document.querySelector('#devisNotifications');
+    const text = document.querySelector('#devisNotificationText');
+    if (!wrap || !text) return;
+
+    const pendingOrAny = (devisItems || []).slice(0, 5);
+    if (!pendingOrAny.length) {
+      wrap.style.display = 'none';
+      return;
+    }
+
+    const first = pendingOrAny[0];
+    const status = first.status || '';
+    const label = status === 'accepted'
+      ? '✅ Votre devis a été accepté !'
+      : status === 'rejected'
+        ? '❌ Votre devis a été refusé.'
+        : '📨 Nous avons bien reçu votre demande de devis.';
+
+    // Message simple: client voit son nom + service
+    const details = [first.service ? String(first.service) : '', first.budget ? String(first.budget) : '']
+      .filter(Boolean)
+      .join(' • ');
+
+    text.textContent = details ? `${label} (${details})` : `${label}`;
+    wrap.style.display = 'block';
+  }
+
+
+  async function loadHomeDynamicContent() {
+    // Only run on home.html (static page)
+    const isHome = /(^|\/)(home\.html)$/.test(window.location.pathname);
+    if (!isHome) return;
+
+    const fetchJson = async (url, token) => {
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch(url, { headers });
+      if (!res.ok) throw new Error(`http_${res.status}`);
+      return res.json();
+    };
+
+    try {
+      const clientToken = getClientToken();
+      const [realisations, blog, devis] = await Promise.all([
+        fetchJson(`${API_BASE}/realisations`),
+        fetchJson(`${API_BASE}/blog`),
+        clientToken ? fetchJson(`${API_BASE}/devis`, clientToken).catch(() => null) : Promise.resolve(null)
+      ]);
+
+      if (realisations && realisations.items) replaceRecentRealisations(realisations.items);
+      if (blog && blog.items) replaceHomeBlog(blog.items);
+      if (devis && devis.items) showClientDevisNotification(devis.items);
+      if (!devis) showClientDevisNotification([]);
+    } catch (e) {
+      // fail silently so homepage still renders.
+      console.warn('[home] dynamic load failed', e);
+    }
+  }
+
   // Boot
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => { 
+    updateClientAccountUI();
+    loadHomeDynamicContent().catch(() => {});
+
+    
+
+    scrollTopBtnVisibility();
+
     scrollTopBtnVisibility();
 
     // Set initial active nav highlighting if possible
@@ -1233,4 +1752,3 @@
     if (d) d.style.display = 'none';
   });
 })();
-

@@ -44,6 +44,7 @@
       </li>
       <li><a href="realisations.html">Réalisations</a></li>
       <li><a href="blog.html">Blog</a></li>
+      <li><a href="compte.html">Compte</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
 
@@ -62,6 +63,7 @@
   <a href="services.html" onclick="toggleMobile()">Services</a>
   <a href="realisations.html" onclick="toggleMobile()">Réalisations</a>
   <a href="blog.html" onclick="toggleMobile()">Blog</a>
+  <a href="compte.html" onclick="toggleMobile()">Compte</a>
   <a href="contact.html" onclick="toggleMobile()">Contact</a>
   <a href="devis.html" onclick="toggleMobile()" class="mobile-cta">Demander un devis</a>
 </div>
@@ -128,6 +130,7 @@
           <input type="text" placeholder="Ex : dans 3 mois, urgent, etc.">
         </div>
 
+        <div id="devisAccountNotice" style="display:none;"></div>
         <button class="btn-green w-full" onclick="submitDevis(event)">ENVOYER LA DEMANDE</button>
         <div id="devisSuccess" style="display:none; color:#7ED957; padding:1rem; text-align:center; font-weight:600;">
           ✅ Votre demande de devis a été envoyée ! Nous vous contacterons dans les 48h.
@@ -212,9 +215,10 @@
 <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-  window.API_BASE = 'http://localhost:3001/api';
+  window.API_BASE = window.location.port === '3001'
+    ? '/api'
+    : `${window.location.protocol}//${window.location.hostname}:3001/api`;
 </script>
-<script src="js/app.js?v=20260627"></script>
+<script src="js/app.js?v=20260630-2"></script>
 </body>
 </html>
-

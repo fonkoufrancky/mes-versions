@@ -153,46 +153,45 @@ try {
     exit;
   }
 
-  // Blog
-  if ($path === '/blog' && $method === 'GET') {
-    require_auth();
-    require_admin_role();
-    require_once __DIR__ . '/lib_blog.php';
-    route_blog_list();
-    exit;
-  }
+// Blog
+   if ($path === '/blog' && $method === 'GET') {
+     require_auth();
+     require_admin_role();
+     require_once __DIR__ . '/lib_blog.php';
+     route_blog_list();
+     exit;
+   }
 
-  if ($path === '/blog' && $method === 'POST') {
-    require_auth();
-    require_admin_role();
-    $body = json_body();
-    require_once __DIR__ . '/lib_blog.php';
-    route_blog_create($body);
-    exit;
-  }
+   // Messages (client can view their own messages)
+   if ($path === '/messages' && $method === 'GET') {
+     require_auth();
+     $body = json_body();
+     $email = $_SESSION['user']['email'] ?? null;
+     if (!$email) throw new ApiError('unauthorized', 401);
+     route_messages_list($email);
+     exit;
+   }
 
-  if ($method === 'PUT' && preg_match('#^/blog/(\d+)$#', $path, $m)) {
-    require_auth();
-    require_admin_role();
-    $id = (int)$m[1];
-    $body = json_body();
-    require_once __DIR__ . '/lib_blog.php';
-    route_blog_update($id, $body);
-    exit;
-  }
+   if ($method === 'PUT' && preg_match('#^/messages/(\d+)$#', $path, $m)) {
+     require_auth();
+     require_admin_role();
+     $id = (int)$m[1];
+     $body = json_body();
+     route_messages_update($id, $body);
+     exit;
+   }
 
-  if ($method === 'DELETE' && preg_match('#^/blog/(\d+)$#', $path, $m)) {
-    require_auth();
-    require_admin_role();
-    $id = (int)$m[1];
-    require_once __DIR__ . '/lib_blog.php';
-    route_blog_delete($id);
-    exit;
-  }
+   if ($method === 'DELETE' && preg_match('#^/messages/(\d+)$#', $path, $m)) {
+     require_auth();
+     require_admin_role();
+     $id = (int)$m[1];
+     route_messages_delete($id);
+     exit;
+   }
 
-  // GET /services etc not matched
-  not_found();
-} catch (ApiError $e) {
+   // GET /services etc not matched
+   not_found();
+ } catch (ApiError $e) {
   http_response_code($e->status);
   header('Content-Type: application/json; charset=utf-8');
   echo json_encode(['error' => $e->message], JSON_UNESCAPED_UNICODE);

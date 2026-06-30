@@ -12,6 +12,33 @@
       "passwordHash": "$2a$10$Jmq7uzG1w2SUR0H.taT0.ONxAouZQhljdT1iFhcUUB8famYfJw.BK",
       "status": "active",
       "createdAt": "2026-06-27T11:21:09.278Z"
+    },
+    {
+      "id": 1,
+      "name": "Client Test",
+      "email": "client@example.com",
+      "role": "client",
+      "status": "active",
+      "passwordHash": "$2a$10$k7ohSdO6.7PCmMcMzKUX2.wTedwxdTZtVVMz7Qgr4my8Jbf3POEa.",
+      "createdAt": "2026-06-29T17:20:19.491Z"
+    },
+    {
+      "id": 2,
+      "name": "francky fonkou",
+      "email": "fonkoufrancky1@gmail.com",
+      "role": "client",
+      "status": "active",
+      "passwordHash": "$2a$10$zpGu9/BQeQaRpZswau/Bwe.egTAnipBCChdBAt9IfxwciJVZajikm",
+      "createdAt": "2026-06-29T17:44:29.973Z"
+    },
+    {
+      "id": 3,
+      "name": "meticia",
+      "email": "meticia@gmail.com",
+      "role": "client",
+      "status": "active",
+      "passwordHash": "$2a$10$lAnzYWHXqxiXL3amd6TyzO/K8HCFZPCfZR4hxCagrGmPzjavJsHUi",
+      "createdAt": "2026-06-30T12:07:42.955Z"
     }
   ],
   "services": [
@@ -87,8 +114,11 @@
       "fullName": "Paul Durand",
       "service": "Formation",
       "budget": "<1k€",
-      "status": "pending",
-      "dateISO": "2024-06-08T00:00:00.000Z"
+      "status": "accepted",
+      "dateISO": "2024-06-08T00:00:00.000Z",
+      "responseMessage": "Bonjour Paul Durand, votre demande de devis pour \"Formation\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "responseSentAt": "2026-06-30T12:11:34.393Z",
+      "rejectionReason": ""
     },
     {
       "id": 6,
@@ -162,6 +192,91 @@
       "responseMessage": "Bonjour francky fonkou, votre demande de devis pour \"Génie Électrique\" a été refusée. Raison : Votre demande ne correspond pas aux critères actuels.",
       "responseSentAt": "2026-06-29T15:16:22.689Z",
       "rejectionReason": "Votre demande ne correspond pas aux critères actuels."
+    },
+    {
+      "id": 11,
+      "fullName": "francky fonkou",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "+237689020640",
+      "company": "DATA INFORMATIQUE",
+      "service": "Génie Électrique",
+      "budget": "1 000 – 5 000 €",
+      "description": "installation d'un batiment 3 chambres deux salons",
+      "desiredTime": "4 jours",
+      "status": "accepted",
+      "dateISO": "2026-06-29T17:05:36.771Z",
+      "createdAt": "2026-06-29T17:05:36.771Z",
+      "responseMessage": "Bonjour francky fonkou, votre demande de devis pour \"Génie Électrique\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "responseSentAt": "2026-06-29T17:06:39.175Z",
+      "rejectionReason": ""
+    },
+    {
+      "id": 12,
+      "fullName": "francky fonkou",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "service": "Nettoyage Industriel",
+      "budget": "1 000 – 5 000 €",
+      "description": "cvfgresgjjkm",
+      "desiredTime": "45 jours",
+      "status": "pending",
+      "dateISO": "2026-06-29T17:36:15.172Z",
+      "createdAt": "2026-06-29T17:36:15.172Z"
+    },
+    {
+      "id": 13,
+      "fullName": "Anon",
+      "email": "anon@example.com",
+      "phone": "",
+      "company": "",
+      "service": "Test",
+      "budget": "1-5k",
+      "description": "test",
+      "desiredTime": "",
+      "status": "pending",
+      "dateISO": "2026-06-29T17:41:47.695Z",
+      "createdAt": "2026-06-29T17:41:47.695Z"
+    },
+    {
+      "id": 14,
+      "fullName": "francky fonkou",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "service": "Tuyauterie Industrielle",
+      "budget": "1 000 – 5 000 €",
+      "description": "gfdsarrjlkhmj jet t'aime a la fin",
+      "desiredTime": "45 jours",
+      "status": "accepted",
+      "dateISO": "2026-06-29T17:45:52.928Z",
+      "createdAt": "2026-06-29T17:45:52.928Z",
+      "clientId": 2,
+      "clientEmail": "fonkoufrancky1@gmail.com",
+      "clientName": "francky fonkou",
+      "responseMessage": "Bonjour francky fonkou, votre demande de devis pour \"Tuyauterie Industrielle\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "responseSentAt": "2026-06-30T12:12:48.530Z",
+      "rejectionReason": ""
+    },
+    {
+      "id": 15,
+      "fullName": "meticia",
+      "email": "meticia@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "service": "Génie Électromécanique",
+      "budget": "Plus de 50 000 €",
+      "description": "fghjkloiuytrewqasdfcvxzqwerty",
+      "desiredTime": "3 mois",
+      "status": "accepted",
+      "dateISO": "2026-06-30T12:09:32.209Z",
+      "createdAt": "2026-06-30T12:09:32.209Z",
+      "clientId": 3,
+      "clientEmail": "meticia@gmail.com",
+      "clientName": "meticia",
+      "responseMessage": "Bonjour meticia, votre demande de devis pour \"Génie Électromécanique\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "responseSentAt": "2026-06-30T12:12:25.411Z",
+      "rejectionReason": ""
     }
   ],
   "blog_posts": [
@@ -205,6 +320,11 @@
       "id": 3,
       "imageUrl": "url",
       "createdAt": "2026-06-29T15:28:49.692Z"
+    },
+    {
+      "id": 4,
+      "imageUrl": "C:\\fakepath\\cafe3.jpg",
+      "createdAt": "2026-06-29T16:57:16.280Z"
     }
   ],
   "settings": {
@@ -218,9 +338,10 @@
     "serviceId": 3,
     "realisationId": 3,
     "blogId": 4,
-    "galleryId": 3,
-    "devisId": 10,
-    "messageId": 3
+    "galleryId": 4,
+    "devisId": 15,
+    "messageId": 7,
+    "userId": 3
   },
   "messages": [
     {
@@ -262,6 +383,62 @@
       "devisId": "10",
       "createdAt": "2026-06-29T15:16:22.689Z",
       "updatedAt": "2026-06-29T15:16:22.689Z"
+    },
+    {
+      "id": 4,
+      "senderName": "KM Root Solutions",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "+237689020640",
+      "company": "DATA INFORMATIQUE",
+      "subject": "Réponse à votre demande de devis",
+      "message": "Bonjour francky fonkou, votre demande de devis pour \"Génie Électrique\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "status": "unread",
+      "source": "devis",
+      "devisId": "11",
+      "createdAt": "2026-06-29T17:06:39.175Z",
+      "updatedAt": "2026-06-29T17:06:39.175Z"
+    },
+    {
+      "id": 5,
+      "senderName": "KM Root Solutions",
+      "email": "meticia@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "subject": "Mise à jour de votre demande de devis",
+      "message": "Bonjour meticia, votre demande de devis pour \"Génie Électromécanique\" a été refusée. Raison : Nous n’avons pas pu valider votre demande pour le moment.",
+      "status": "unread",
+      "source": "devis",
+      "devisId": "15",
+      "createdAt": "2026-06-30T12:12:10.350Z",
+      "updatedAt": "2026-06-30T12:12:10.350Z"
+    },
+    {
+      "id": 6,
+      "senderName": "KM Root Solutions",
+      "email": "meticia@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "subject": "Réponse à votre demande de devis",
+      "message": "Bonjour meticia, votre demande de devis pour \"Génie Électromécanique\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "status": "unread",
+      "source": "devis",
+      "devisId": "15",
+      "createdAt": "2026-06-30T12:12:25.411Z",
+      "updatedAt": "2026-06-30T12:12:25.411Z"
+    },
+    {
+      "id": 7,
+      "senderName": "KM Root Solutions",
+      "email": "fonkoufrancky1@gmail.com",
+      "phone": "689020640",
+      "company": "DATA INFORMATIQUE",
+      "subject": "Réponse à votre demande de devis",
+      "message": "Bonjour francky fonkou, votre demande de devis pour \"Tuyauterie Industrielle\" a été acceptée. Nous vous contacterons rapidement pour finaliser votre projet.",
+      "status": "unread",
+      "source": "devis",
+      "devisId": "14",
+      "createdAt": "2026-06-30T12:12:48.530Z",
+      "updatedAt": "2026-06-30T12:12:48.530Z"
     }
   ]
 }

@@ -10,8 +10,9 @@
 <body>
 
 <script>
-  // Force le bon backend (API sur port 3001)
-  window.API_BASE = 'http://localhost:3001/api';
+  window.API_BASE = window.location.port === '3001'
+    ? '/api'
+    : `${window.location.protocol}//${window.location.hostname}:3001/api`;
 </script>
 <main style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;">
   <div style="width:min(520px,92vw); background:#111827; color:white; border:1px solid rgba(126,217,87,0.25); border-radius:12px; padding:20px; box-shadow:0 10px 40px rgba(0,0,0,0.35);">
@@ -44,14 +45,16 @@
 
 <script>
   async function apiFetch(path, { method = 'GET', body = null } = {}) {
-    const res = await fetch(path, {
+    const apiBase = (window.API_BASE || '').toString().replace(/\/$/, '');
+    const apiPath = String(path || '').replace(/^\/api(?=\/)/, '');
+    const res = await fetch(`${apiBase}${apiPath}`, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : null
     });
     const ct = res.headers.get('content-type') || '';
     const data = ct.includes('application/json') ? await res.json().catch(() => null) : await res.text().catch(() => null);
-    if (!res.ok) throw new Error(data?.error || `http_${res.status}`);
+    if (!res.ok) throw new Error((data && data.error) || `http_${res.status}`);
     return data;
   }
 
@@ -72,4 +75,3 @@
 </script>
 </body>
 </html>
-

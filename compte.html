@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KM Root Solutions – Mon compte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <circle cx="21" cy="21" r="20" fill="#1E3D2F" stroke="#7ED957" stroke-width="1.5"/>
+        <rect x="18.5" y="21" width="5" height="10" rx="2" fill="#1E3D2F"/>
+        <path d="M21 31 L15 38 M21 31 L27 38 M21 31 L21 39" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="21" cy="16" r="9" fill="#2E7D32"/>
+        <circle cx="15" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="27" cy="19" r="6" fill="#2E7D32"/>
+        <circle cx="17" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="25" cy="13" r="5" fill="#7ED957"/>
+        <circle cx="21" cy="10" r="5" fill="#7ED957"/>
+      </svg>
+      <div class="nav-brand">
+        <span class="nav-brand-name">KM ROOT</span>
+        <span class="nav-brand-sub">SOLUTIONS</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="index.html#about">À Propos</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#realisations">Réalisations</a></li>
+      <li><a href="index.html#blog">Blog</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="compte.html" style="color:var(--green); font-weight:700;">Compte</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="index.html#contact" class="btn-devis" style="background:rgba(126,217,87,0.12);color:var(--green);border:1px solid rgba(126,217,87,0.25)">CONTACT</a>
+      <div class="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobile()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Accueil</a>
+  <a href="index.html#about">À Propos</a>
+  <a href="index.html#services">Services</a>
+  <a href="index.html#realisations">Réalisations</a>
+  <a href="index.html#blog">Blog</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="compte.html" class="mobile-cta">Mon compte</a>
+</div>
+
+<main>
+  <section class="page-hero-small dark-section">
+    <div class="container">
+      <h1>MON COMPTE CLIENT</h1>
+      <div class="breadcrumb"><a href="index.html">Accueil</a> / Mon compte</div>
+    </div>
+  </section>
+
+  <section class="devis-main">
+    <div class="container">
+      <div class="devis-wrap" style="display:grid; gap:24px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+        <div class="card" style="padding:24px; border:1px solid rgba(126,217,87,0.18); border-radius:16px; background:#0f172a; color:white;">
+          <h2 style="margin-top:0;">Créer un compte</h2>
+          <p style="color:rgba(255,255,255,0.72);">Créez votre compte pour gérer vos demandes de devis.</p>
+          <div class="form-group"><label>Nom complet</label><input id="accountRegisterName" type="text" placeholder="Votre nom"></div>
+          <div class="form-group"><label>Email</label><input id="accountRegisterEmail" type="email" placeholder="votre@email.com"></div>
+          <div class="form-group"><label>Mot de passe</label><input id="accountRegisterPassword" type="password" placeholder="Minimum 6 caractères"></div>
+          <button class="btn-green w-full" onclick="submitClientRegister(event)">CRÉER MON COMPTE</button>
+          <div id="accountRegisterMessage" style="display:none; margin-top:10px; color:#7ED957; font-weight:600;"></div>
+        </div>
+
+        <div class="card" style="padding:24px; border:1px solid rgba(126,217,87,0.18); border-radius:16px; background:#0f172a; color:white;">
+          <h2 style="margin-top:0;">Se connecter</h2>
+          <p style="color:rgba(255,255,255,0.72);">Vous avez déjà un compte ? Connectez-vous pour continuer.</p>
+          <div class="form-group"><label>Email</label><input id="accountLoginEmail" type="email" placeholder="votre@email.com"></div>
+          <div class="form-group"><label>Mot de passe</label><input id="accountLoginPassword" type="password" placeholder="Votre mot de passe"></div>
+          <button class="btn-green w-full" onclick="submitClientLogin(event)">SE CONNECTER</button>
+          <div id="accountLoginMessage" style="display:none; margin-top:10px; color:#7ED957; font-weight:600;"></div>
+        </div>
+      </div>
+
+      <div class="devis-wrap" style="margin-top:24px;">
+        <div id="clientAccountStatus" style="margin-bottom:14px; font-weight:700; color:#1b5e20;"></div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+          <button class="btn-green" onclick="submitClientLogout(event)">SE DÉCONNECTER</button>
+          <a href="messages.html" class="btn-green" id="clientMessagesLink" style="display:none; background:#0f172a; color:#7ED957;">📬 MES MESSAGES</a>
+        </div>
+        <div id="clientQuoteNotice" style="display:block; padding:16px; border-radius:12px; background:#f5fff0; border:1px solid #c8e6c9; color:#2e7d32; font-weight:600;">Connectez-vous pour envoyer votre demande de devis.</div>
+
+        <div id="clientQuoteForm" style="display:none; margin-top:16px;">
+          <div class="form-row-2">
+            <div class="form-group"><label>Nom complet *</label><input id="clientDevisName" type="text" placeholder="Votre nom"></div>
+            <div class="form-group"><label>Email *</label><input id="clientDevisEmail" type="email" placeholder="votre@email.com"></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group"><label>Téléphone</label><input id="clientDevisPhone" type="tel" placeholder="Votre numéro"></div>
+            <div class="form-group"><label>Société</label><input id="clientDevisCompany" type="text" placeholder="Nom de votre société"></div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Service souhaité</label>
+              <select id="clientDevisService">
+                <option value="">Sélectionnez un service</option>
+                <option>Génie Climatique (CVC)</option>
+                <option>Génie Électrique</option>
+                <option>Génie Électromécanique</option>
+                <option>Tuyauterie Industrielle</option>
+                <option>Architecture & Décoration</option>
+                <option>Formation & Coaching</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Budget estimatif</label>
+              <select id="clientDevisBudget">
+                <option value="">Sélectionnez votre budget</option>
+                <option>Moins de 1 000 €</option>
+                <option>1 000 – 5 000 €</option>
+                <option>5 000 – 10 000 €</option>
+                <option>10 000 – 50 000 €</option>
+                <option>Plus de 50 000 €</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description du projet *</label>
+            <textarea id="clientDevisDescription" rows="6" placeholder="Décrivez votre projet en détail..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Délai souhaité</label>
+            <input id="clientDevisTime" type="text" placeholder="Ex : dans 3 mois, urgent, etc.">
+          </div>
+          <button class="btn-green w-full" onclick="submitClientDevis(event)">ENVOYER LA DEMANDE</button>
+          <div id="accountDevisMessage" style="display:none; margin-top:10px; color:#7ED957; font-weight:600;"></div>
+        </div>
+
+        <div style="margin-top:24px; padding:20px; border-radius:16px; background:#ffffff; border:1px solid #dfe9dc;">
+          <h3 style="margin-top:0;">Mes demandes de devis</h3>
+          <div id="clientDevisHistoryList">Chargement…</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="./js/app.js?v=20260630-2"></script>
+</body>
+</html>

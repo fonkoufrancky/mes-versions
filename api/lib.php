@@ -281,4 +281,43 @@ function route_devis_update_status(int $id, array $body): void {
   ]], JSON_UNESCAPED_UNICODE);
 }
 
+function route_messages_list(string $email): void {
+  $pdo = get_db();
+  $stmt = $pdo->prepare('SELECT * FROM messages WHERE LOWER(email)=LOWER(?) ORDER BY createdAt DESC');
+  $stmt->execute([$email]);
+  $items = [];
+  foreach ($stmt->fetchAll() as $r) {
+    $items[] = [
+      'id' => (int)$r['id'],
+      'senderName' => $r['senderName'],
+      'email' => $r['email'],
+      'subject' => $r['subject'],
+      'message' => $r['message'],
+      'status' => $r['status'],
+      'source' => $r['source'] ?? null,
+      'devisId' => $r['devisId'] ?? null,
+      'createdAt' => $r['createdAt']
+    ];
+  }
+  header('Content-Type: application/json; charset=utf-8');
+  echo json_encode(['items' => $items], JSON_UNESCAPED_UNICODE);
+}
 
+function route_messages_update(int $id, array $body): void {
+  $pdo = get_db();
+  $status = (string)($body['status'] ?? '');
+  $stmt = $pdo->prepare('UPDATE messages SET status = ? WHERE id = ?');
+  $stmt->execute([$status, $id]);
+  if ($stmt->rowCount() === 0) throw new ApiError('not_found', 404);
+
+  header('Content-Type: application/json; charset=utf-8');
+  echo json_encode(['item' => ['id' => $id, 'status' => $status]], JSON_UNESCAPED_UNICODE);
+}
+
+function route_messages_delete(int $id): void {
+  $pdo = get_db();
+  $stmt = $pdo->prepare('DELETE FROM messages WHERE id = ?');
+  $stmt->execute([$id]);
+  header('Content-Type: application/json; charset=utf-8');
+  echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE);
+}

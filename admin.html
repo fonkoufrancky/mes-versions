@@ -167,10 +167,10 @@ e</th><th>Catégorie</th><th>Date</th><th>Actions</th></tr></thead>
 </div>
 
 <script>
-  // Force le bon backend (API sur port 3001)
-  window.API_BASE = 'http://localhost:3001/api';
+  window.API_BASE = window.location.port === '3001'
+    ? '/api'
+    : `${window.location.protocol}//${window.location.hostname}:3001/api`;
 </script>
-<script src="js/app.js?v=20260627"></script>
+<script src="js/app.js?v=20260630-2"></script>
 </body>
 </html>
-

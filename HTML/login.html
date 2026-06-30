@@ -46,14 +46,16 @@
 
 <script>
   async function apiFetch(path, { method = 'GET', body = null } = {}) {
-    const res = await fetch(path, {
+    const apiBase = (window.API_BASE || '').toString().replace(/\/$/, '');
+    const apiPath = String(path || '').replace(/^\/api(?=\/)/, '');
+    const res = await fetch(`${apiBase}${apiPath}`, {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : null
     });
     const ct = res.headers.get('content-type') || '';
     const data = ct.includes('application/json') ? await res.json().catch(() => null) : await res.text().catch(() => null);
-    if (!res.ok) throw new Error(data?.error || `http_${res.status}`);
+    if (!res.ok) throw new Error((data && data.error) || `http_${res.status}`);
     return data;
   }
 
@@ -74,4 +76,3 @@
 </script>
 </body>
 </html>
-
